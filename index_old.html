@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formato Único de Hoja de Vida — Persona Natural (Local)</title>
+<style>
+  :root{
+    --blue:#0b3d91;
+    --accent:#155fd0;
+    --bg:#eef1f6;
+    --panel:#ffffff;
+    --line:#d7dce5;
+    --field-bg: rgba(255, 235, 59, 0.28);
+    --field-border: rgba(21, 95, 208, 0.55);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: var(--bg); color:#1b2430;
+  }
+  header{
+    position:sticky; top:0; z-index:50;
+    background: linear-gradient(180deg,#0b3d91,#123a80);
+    color:#fff; padding:12px 18px; display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+  }
+  header h1{font-size:16px; margin:0; font-weight:600; flex:1 1 auto; min-width:220px;}
+  header .sub{font-size:11px; opacity:.85; display:block; font-weight:400;}
+  .btn{
+    background:#fff; color:var(--blue); border:none; border-radius:7px; padding:8px 12px;
+    font-size:13px; font-weight:600; cursor:pointer; transition:.15s; white-space:nowrap;
+  }
+  .btn:hover{background:#e7edfb;}
+  .btn.primary{background:#1cbf6c; color:#fff;}
+  .btn.primary:hover{background:#17a95d;}
+  .btn.ghost{background:transparent; color:#fff; border:1px solid rgba(255,255,255,.5);}
+  .btn.ghost:hover{background:rgba(255,255,255,.12);}
+  .btn.danger{background:transparent; color:#ffd6d6; border:1px solid rgba(255,120,120,.6);}
+  .btn.danger:hover{background:rgba(255,80,80,.15);}
+  #status{font-size:12px; color:#cfe0ff; min-width:120px;}
+
+  .layout{display:flex; gap:0; align-items:flex-start;}
+  .doc-area{flex:1 1 auto; padding:22px; display:flex; flex-direction:column; align-items:center; gap:26px;}
+  .page{
+    position:relative; width:100%; max-width:820px; background:#fff;
+    box-shadow:0 4px 24px rgba(20,30,60,.18); border-radius:4px; overflow:hidden;
+  }
+  .page img{display:block; width:100%; height:auto; -webkit-user-select:none; user-select:none; pointer-events:none;}
+  .page .tag{
+    position:absolute; top:-11px; left:14px; background:var(--blue); color:#fff; font-size:11px;
+    padding:3px 10px; border-radius:5px 5px 0 0; font-weight:600; letter-spacing:.3px;
+  }
+
+  .field{
+    position:absolute; font-family: Arial, Helvetica, sans-serif; color:#0d1b33;
+    background:var(--field-bg); border:1px solid var(--field-border); border-radius:2px;
+    padding:0 2px; outline:none;
+  }
+  .field:focus{ background: rgba(255, 214, 51, 0.55); border-color:#0b3d91; z-index:5;}
+  input.field[type="text"]{ }
+  input.field[type="checkbox"]{
+    -webkit-appearance:none; appearance:none; margin:0; padding:0; background:rgba(255,235,59,.35);
+    border:1.4px solid var(--field-border); border-radius:2px; cursor:pointer; position:absolute;
+  }
+  input.field[type="checkbox"]:checked{ background:#0b3d91; }
+  input.field[type="checkbox"]:checked::after{
+    content:"✕"; color:#fff; position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    font-weight:700; line-height:1;
+  }
+  body.clean .field{ background:transparent; border-color:transparent; }
+  body.clean input.field[type="checkbox"]:checked{ background:transparent; }
+  body.clean input.field[type="checkbox"]:checked::after{ color:#0d1b33; }
+
+  .sidebar{
+    width:300px; flex:0 0 300px; background:var(--panel); border-left:1px solid var(--line);
+    padding:16px; position:sticky; top:56px; height:calc(100vh - 56px); overflow-y:auto; font-size:13px;
+  }
+  .sidebar h2{font-size:14px; margin:0 0 8px;}
+  .sidebar p{color:#5a6478; line-height:1.5; margin:0 0 10px;}
+  .sidebar ol{padding-left:18px; color:#5a6478; line-height:1.6; margin:0 0 14px;}
+  .sidebar .hint{background:#eef4ff; border:1px solid #d5e3ff; padding:10px; border-radius:8px; font-size:12px; color:#28407a; margin-bottom:14px;}
+  .sidebar .warn{background:#fff6e5; border:1px solid #ffe3ad; padding:10px; border-radius:8px; font-size:12px; color:#7a5a1a;}
+  .zoombar{display:flex; gap:8px; margin-bottom:14px;}
+  .zoombar button{flex:1; padding:6px; border-radius:6px; border:1px solid var(--line); background:#fff; cursor:pointer; font-size:12px;}
+
+  @media (max-width: 980px){
+    .layout{flex-direction:column;}
+    .sidebar{width:100%; flex:none; position:static; height:auto; border-left:none; border-top:1px solid var(--line);}
+  }
+  @media print{
+    header, .sidebar{display:none;}
+    .field{background:transparent!important; border-color:transparent!important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Formato Único de Hoja de Vida — Persona Natural
+    <span class="sub">Herramienta local · sin conexión · tus datos nunca salen de tu computador</span>
+  </h1>
+  <span id="status"></span>
+  <button class="btn ghost" id="btnClean">👁️ Vista limpia</button>
+  <button class="btn danger" id="btnClear">🗑️ Limpiar formulario</button>
+  <button class="btn primary" id="btnDownload">⬇️ Descargar PDF</button>
+</header>
+
+<div class="layout">
+  <div class="doc-area" id="docArea">
+    <div class="page" id="page0"><span class="tag">Página 1</span><img src="data:image/png;base64,__PAGE1_B64__" alt="Página 1"></div>
+    <div class="page" id="page1"><span class="tag">Página 2</span><img src="data:image/png;base64,__PAGE2_B64__" alt="Página 2"></div>
+    <div class="page" id="page2"><span class="tag">Página 3</span><img src="data:image/png;base64,__PAGE3_B64__" alt="Página 3"></div>
+  </div>
+
+  <div class="sidebar">
+    <h2>¿Cómo funciona?</h2>
+    <ol>
+      <li>Haz clic directamente sobre cada línea o casilla del documento y escribe tu dato.</li>
+      <li>Tus datos se guardan automáticamente en este navegador (localStorage) — puedes cerrar y volver después.</li>
+      <li>Usa "Vista limpia" para revisar cómo se ve sin los recuadros amarillos.</li>
+      <li>Cuando esté todo listo, pulsa "Descargar PDF" para generar el documento oficial diligenciado.</li>
+    </ol>
+    <div class="hint">💡 Para los cuadros de sí/no, marcado de grado o público/privado, simplemente haz clic sobre la casilla — verás una ✕.</div>
+    <div class="warn">⚠️ Todo ocurre en tu navegador. No hay servidor, no hay pagos, no se sube ningún dato a internet.</div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  const PAGE_W = 612, PAGE_H = 792;
+  const FIELDS = [];
+
+  function T(id, page, x, y, w, h, opts){
+    opts = opts || {};
+    FIELDS.push(Object.assign({id, page, x, y, w, h, type:'text', size: opts.size || 8, align: opts.align || 'left'}, opts));
+  }
+  function C(id, page, x, y, group, opts){
+    opts = opts || {};
+    const s = opts.s || 9;
+    FIELDS.push(Object.assign({id, page, x, y:y-s+2, w:s, h:s, type:'chk', group}, opts));
+  }
+
+  /* ===================== PÁGINA 1 ===================== */
+  T('entidadReceptora', 0, 441, 55, 100, 12, {size:7});
+
+  T('primerApellido', 0, 64, 179, 158, 16);
+  T('segundoApellido', 0, 230, 179, 163, 16);
+  T('nombres', 0, 399, 179, 148, 16);
+
+  C('docCC', 0, 82, 220, 'doc');
+  C('docCE', 0, 113, 220, 'doc');
+  C('docPAS', 0, 148, 220, 'doc');
+  T('numDocumento', 0, 182, 210, 112, 14);
+  C('sexoF', 0, 318, 220, 'sexo');
+  C('sexoM', 0, 341, 220, 'sexo');
+  C('nacCol', 0, 386, 220, 'nacionalidad');
+  C('nacExt', 0, 458, 220, 'nacionalidad');
+  T('paisNacionalidad', 0, 480, 210, 68, 14, {size:7});
+
+  C('libretaPrimera', 0, 105, 251, 'libreta');
+  C('libretaSegunda', 0, 219, 251, 'libreta');
+  T('libretaNumero', 0, 330, 242, 135, 14);
+  T('libretaDM', 0, 490, 242, 58, 14);
+
+  T('fechaNacDia', 0, 131, 277, 25, 14, {align:'center'});
+  T('fechaNacMes', 0, 180, 277, 25, 14, {align:'center'});
+  T('fechaNacAno', 0, 232, 277, 35, 14, {align:'center'});
+  T('paisNac', 0, 86, 294, 195, 14);
+  T('deptoNac', 0, 94, 311, 190, 14);
+  T('municipioNac', 0, 109, 329, 175, 14);
+
+  T('direccionCorresp', 0, 291, 270, 258, 14);
+  T('paisCorresp', 0, 313, 294, 122, 14);
+  T('deptoCorresp', 0, 473, 294, 76, 14);
+  T('municipioCorresp', 0, 337, 311, 212, 14);
+  T('telefono', 0, 339, 329, 96, 14);
+  T('email', 0, 470, 329, 79, 14, {size:7});
+
+  // Último grado aprobado (educación básica y media)
+  const grados = [
+    ['1',106],['2',122.8],['3',140.3],['4',157.3],['5',173.8],['6',191],
+    ['7',208.1],['8',225],['9',242],['10',259],['11',276]
+  ];
+  grados.forEach(function(g){ C('grado_'+g[0], 0, g[1]-4, 481, 'grado', {s:9}); });
+  T('tituloObtenido', 0, 293, 439, 256, 13, {size:7});
+  T('fechaGradoMes', 0, 330, 459, 45, 13, {align:'center'});
+  T('fechaGradoAno', 0, 390, 459, 45, 13, {align:'center'});
+
+  // Educación superior (5 filas)
+  const esRows = [580, 598.3, 616.6, 634.9, 653.2];
+  esRows.forEach(function(y, i){
+    const p = 'es'+i+'_';
+    T(p+'modalidad', 0, 64, y, 50, 14, {size:7});
+    T(p+'semestres', 0, 116, y, 60, 14, {size:7, align:'center'});
+    C(p+'gradSi', 0, 187, y+12, 'es'+i+'_grad', {s:8});
+    C(p+'gradNo', 0, 209, y+12, 'es'+i+'_grad', {s:8});
+    T(p+'nombreEstudios', 0, 228, y, 197, 14, {size:7});
+    T(p+'termMes', 0, 428, y, 35, 14, {size:7, align:'center'});
+    T(p+'termAno', 0, 467, y, 38, 14, {size:7, align:'center'});
+    T(p+'tarjetaProfesional', 0, 509, y, 52, 14, {size:6.5});
+  });
+
+  // Idiomas (2 filas)
+  [710, 726].forEach(function(y, i){
+    const p = 'idi'+i+'_';
+    T(p+'nombre', 0, 65, y, 235, 13, {size:7});
+    const cols = {habla:[306.5,323.5,340], lee:[357.5,374.5,391], escribe:[408.5,425.5,442.5]};
+    Object.keys(cols).forEach(function(k){
+      const xs = cols[k];
+      ['R','B','MB'].forEach(function(lvl, li){
+        C(p+k+lvl, 0, xs[li]-4, y+11, p+k, {s:8});
+      });
+    });
+  });
+
+  /* ===================== PÁGINA 2 (Experiencia laboral) ===================== */
+  const blockBases = [
+    {empresa:219.6, depto:249.6, tel:279.6, cargo:309.6},
+    {empresa:350.2, depto:380.2, tel:410.2, cargo:440.2},
+    {empresa:479.8, depto:509.8, tel:539.8, cargo:569.8},
+    {empresa:610.2, depto:640.2, tel:670.2, cargo:700.2}
+  ];
+  blockBases.forEach(function(b, i){
+    const p = 'exp'+i+'_';
+    T(p+'empresa', 1, 65, b.empresa+8, 265, 14, {size:7});
+    C(p+'publica', 1, 368, b.empresa+16, p+'tipo', {s:8});
+    C(p+'privada', 1, 416, b.empresa+16, p+'tipo', {s:8});
+    T(p+'pais', 1, 450, b.empresa+8, 99, 14, {size:7});
+
+    T(p+'departamento', 1, 65, b.depto+8, 173, 14, {size:7});
+    T(p+'municipio', 1, 243, b.depto+8, 170, 14, {size:7});
+    T(p+'correo', 1, 418, b.depto+8, 131, 14, {size:6.5});
+
+    T(p+'telefono', 1, 65, b.tel+7, 170, 11, {size:7});
+    T(p+'ingresoDia', 1, 255, b.tel+16, 15, 10, {size:6.5, align:'center'});
+    T(p+'ingresoMes', 1, 306, b.tel+16, 16, 10, {size:6.5, align:'center'});
+    T(p+'ingresoAno', 1, 354, b.tel+16, 33, 10, {size:6.5, align:'center'});
+    T(p+'retiroDia', 1, 422, b.tel+16, 15, 10, {size:6.5, align:'center'});
+    T(p+'retiroMes', 1, 473, b.tel+16, 16, 10, {size:6.5, align:'center'});
+    T(p+'retiroAno', 1, 521, b.tel+16, 28, 10, {size:6.5, align:'center'});
+
+    T(p+'cargo', 1, 65, b.cargo+9, 173, 14, {size:7});
+    T(p+'dependencia', 1, 243, b.cargo+9, 163, 14, {size:7});
+    T(p+'direccion', 1, 413, b.cargo+9, 136, 14, {size:7});
+  });
+
+  /* ===================== PÁGINA 3 ===================== */
+  [['Servidor',188.2],['Privado',216.2],['Independiente',244.2],['Total',272.2]].forEach(function(r){
+    T('tiempo'+r[0]+'Anos', 2, 390, r[1]-3, 55, 13, {align:'center'});
+    T('tiempo'+r[0]+'Meses', 2, 458, r[1]-3, 58, 13, {align:'center'});
+  });
+
+  C('juramentoSi', 2, 267, 375, 'juramento');
+  C('juramentoNo', 2, 300, 375, 'juramento');
+  T('ciudadFecha', 2, 220, 451, 326, 13, {size:8});
+  T('firmaTexto', 2, 240, 486, 150, 16, {size:9, style:'italic'});
+
+  /* ===================== RENDER ===================== */
+  const state = {};
+  const STORAGE_KEY = 'formatoUnicoHV_personaNatural_v1';
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if(raw) Object.assign(state, JSON.parse(raw));
+    }catch(e){}
+  }
+  let saveTimer = null;
+  function saveState(){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(function(){
+      try{
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        setStatus('Guardado ✓');
+      }catch(e){ setStatus('No se pudo guardar'); }
+    }, 250);
+  }
+  function setStatus(msg){
+    const el = document.getElementById('status');
+    el.textContent = msg;
+    clearTimeout(setStatus._t);
+    setStatus._t = setTimeout(function(){ el.textContent=''; }, 1800);
+  }
+
+  const pages = [document.getElementById('page0'), document.getElementById('page1'), document.getElementById('page2')];
+  const elements = {};
+
+  function buildFields(){
+    FIELDS.forEach(function(f){
+      const el = document.createElement('input');
+      el.className = 'field';
+      el.dataset.id = f.id;
+      if(f.type === 'chk'){
+        el.type = 'checkbox';
+        if(f.group) el.dataset.group = f.group;
+      } else {
+        el.type = 'text';
+        el.autocomplete = 'off';
+        el.spellcheck = false;
+      }
+      pages[f.page].appendChild(el);
+      elements[f.id] = el;
+
+      el.addEventListener('input', function(){
+        state[f.id] = f.type === 'chk' ? el.checked : el.value;
+        saveState();
+      });
+      el.addEventListener('change', function(){
+        if(f.type === 'chk'){
+          if(el.checked && f.group){
+            FIELDS.filter(o => o.group === f.group && o.id !== f.id).forEach(function(o){
+              elements[o.id].checked = false;
+              state[o.id] = false;
+            });
+          }
+          state[f.id] = el.checked;
+          saveState();
+        }
+      });
+    });
+  }
+
+  function applyState(){
+    FIELDS.forEach(function(f){
+      const el = elements[f.id];
+      if(f.type === 'chk'){
+        el.checked = !!state[f.id];
+      } else {
+        el.value = state[f.id] || '';
+      }
+    });
+  }
+
+  function layout(){
+    pages.forEach(function(pageEl, pi){
+      const rect = pageEl.getBoundingClientRect();
+      const scale = rect.width / PAGE_W;
+      FIELDS.filter(f => f.page === pi).forEach(function(f){
+        const el = elements[f.id];
+        el.style.left = (f.x * scale) + 'px';
+        el.style.top = (f.y * scale) + 'px';
+        el.style.width = (f.w * scale) + 'px';
+        el.style.height = (f.h * scale) + 'px';
+        if(f.type === 'text'){
+          el.style.fontSize = Math.max(7, f.size * scale) + 'px';
+          el.style.textAlign = f.align || 'left';
+          if(f.style === 'italic') el.style.fontStyle = 'italic';
+        }
+      });
+    });
+  }
+
+  buildFields();
+  loadState();
+  applyState();
+  requestAnimationFrame(layout);
+  window.addEventListener('resize', function(){ requestAnimationFrame(layout); });
+  window.addEventListener('load', function(){ requestAnimationFrame(layout); });
+
+  document.getElementById('btnClean').addEventListener('click', function(){
+    document.body.classList.toggle('clean');
+    this.textContent = document.body.classList.contains('clean') ? '✏️ Vista de edición' : '👁️ Vista limpia';
+  });
+
+  document.getElementById('btnClear').addEventListener('click', function(){
+    if(!confirm('¿Seguro que quieres borrar todos los datos ingresados? Esta acción no se puede deshacer.')) return;
+    Object.keys(state).forEach(function(k){ delete state[k]; });
+    localStorage.removeItem(STORAGE_KEY);
+    applyState();
+    setStatus('Formulario limpio');
+  });
+
+  /* ===================== DESCARGAR PDF ===================== */
+  function b64ToBytes(b64){
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) bytes[i] = bin.charCodeAt(i);
+    return bytes;
+  }
+
+  document.getElementById('btnDownload').addEventListener('click', async function(){
+    const btn = this;
+    btn.disabled = true;
+    const originalText = btn.textContent;
+    btn.textContent = 'Generando...';
+    try{
+      const { PDFDocument, StandardFonts, rgb } = PDFLib;
+      const pdfDoc = await PDFDocument.load(b64ToBytes(ORIGINAL_PDF_B64));
+      const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+      const pdfPages = pdfDoc.getPages();
+
+      FIELDS.forEach(function(f){
+        const page = pdfPages[f.page];
+        if(f.type === 'chk'){
+          if(state[f.id]){
+            const size = Math.min(f.w, f.h) * 0.85;
+            page.drawText('X', {
+              x: f.x + (f.w - size*0.62)/2,
+              y: PAGE_H - (f.y + f.h) + (f.h - size)/2 + 1,
+              size: size, font: font, color: rgb(0.05,0.05,0.1)
+            });
+          }
+        } else {
+          const val = (state[f.id] || '').toString();
+          if(!val) return;
+          let size = f.size || 8;
+          const maxWidth = f.w - 2;
+          while(font.widthOfTextAtSize(val, size) > maxWidth && size > 5.5){ size -= 0.3; }
+          let x = f.x + 1;
+          if(f.align === 'center'){
+            const tw = font.widthOfTextAtSize(val, size);
+            x = f.x + Math.max(1,(f.w - tw)/2);
+          }
+          const y = PAGE_H - (f.y + f.h) + (f.h - size)/2 + 1.5;
+          page.drawText(val, { x: x, y: y, size: size, font: font, color: rgb(0.05,0.05,0.25) });
+        }
+      });
+
+      const bytes = await pdfDoc.save();
+      const blob = new Blob([bytes], {type:'application/pdf'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      const nombreArchivo = (state.primerApellido || 'formato') + '_' + (state.nombres || 'hoja_de_vida');
+      a.href = url;
+      a.download = nombreArchivo.replace(/\s+/g,'_') + '.pdf';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+      setStatus('PDF descargado ✓');
+    }catch(err){
+      console.error(err);
+      alert('Ocurrió un error generando el PDF: ' + err.message);
+    }finally{
+      btn.disabled = false;
+      btn.textContent = originalText;
+    }
+  });
+
+  const ORIGINAL_PDF_B64 = "__ORIGINAL_PDF_B64__";
+})();
+</script>
+</body>
+</html>
