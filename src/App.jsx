@@ -113,9 +113,9 @@ function App() {
     { id: 'libretaDM', page: 0, x: 495, y: 236, w: 58, h: 14, type: 'text' },
     
     // Fecha nacimiento
-    { id: 'fechaNacDia', page: 0, x: 133, y: 275, w: 25, h: 14, type: 'text', align: 'center' },
-    { id: 'fechaNacMes', page: 0, x: 183, y: 275, w: 25, h: 14, type: 'text', align: 'center' },
-    { id: 'fechaNacAno', page: 0, x: 235, y: 275, w: 35, h: 14, type: 'text', align: 'center' },
+    { id: 'fechaNacDia', page: 0, x: 133, y: 273, w: 25, h: 14, type: 'text', align: 'center', size: 10 },
+    { id: 'fechaNacMes', page: 0, x: 183, y: 273, w: 23, h: 14, type: 'text', align: 'center', size: 10 },
+    { id: 'fechaNacAno', page: 0, x: 235, y: 273, w: 34, h: 14, type: 'text', align: 'center', size: 10 },
     
     // Lugar nacimiento
     { id: 'paisNac', page: 0, x: 112, y: 293, w: 155, h: 14, type: 'text' },
@@ -123,7 +123,7 @@ function App() {
     { id: 'municipioNac', page: 0, x: 112, y: 327, w: 155, h: 14, type: 'text' },
     
     // Dirección correspondencia
-    { id: 'direccionCorresp', page: 0, x: 291, y: 270, w: 258, h: 14, type: 'text' },
+    { id: 'direccionCorresp', page: 0, x: 291, y: 270, w: 258, h: 14, type: 'text', size: 10 },
     { id: 'paisCorresp', page: 0, x: 315, y: 293, w: 122, h: 14, type: 'text' },
     { id: 'deptoCorresp', page: 0, x: 473, y: 293, w: 76, h: 14, type: 'text' },
     { id: 'municipioCorresp', page: 0, x: 342, y: 309, w: 212, h: 14, type: 'text' },
@@ -139,23 +139,24 @@ function App() {
       w: 9,
       h: 9,
       type: 'chk',
-      group: 'grado'
+      group: 'grado',
+      size: 10
     })),
     
     // Título obtenido
     { id: 'tituloObtenido', page: 0, x: 356, y: 432, w: 256, h: 13, type: 'text', size: 7 },
-    { id: 'fechaGradoMes', page: 0, x: 350, y: 462, w: 20, h: 13, type: 'text', align: 'center' },
-    { id: 'fechaGradoAno', page: 0, x: 405, y: 462, w: 45, h: 13, type: 'text', align: 'center' },
+    { id: 'fechaGradoMes', page: 0, x: 350, y: 462, w: 17, h: 13, type: 'text', align: 'center',size: 10 },
+    { id: 'fechaGradoAno', page: 0, x: 405, y: 462, w: 45, h: 13, type: 'text', align: 'center', size: 10 },
     
     // Educación superior (5 filas)
     ...[580, 598.3, 616.6, 634.9, 653.2].map((y, i) => [
-      { id: `es${i}_modalidad`, page: 0, x: 64, y: y, w: 50, h: 14, type: 'text', size: 7 },
-      { id: `es${i}_semestres`, page: 0, x: 116, y: y, w: 60, h: 14, type: 'text', size: 7, align: 'center' },
-      { id: `es${i}_gradSi`, page: 0, x: 187, y: y - 0, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
+      { id: `es${i}_modalidad`, page: 0, x: 62, y: y, w: 45, h: 14, type: 'text', size: 10 },
+      { id: `es${i}_semestres`, page: 0, x: 113, y: y, w: 60, h: 14, type: 'text', size: 9, align: 'center' },
+      { id: `es${i}_gradSi`, page: 0, x: 187, y: y + -1, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
       { id: `es${i}_gradNo`, page: 0, x: 209, y: y - 0, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
-      { id: `es${i}_nombreEstudios`, page: 0, x: 228, y: y, w: 190, h: 14, type: 'text', size: 7 },
-      { id: `es${i}_termMes`, page: 0, x: 428, y: y, w: 15, h: 14, type: 'text', size: 7, align: 'center' },
-      { id: `es${i}_termAno`, page: 0, x: 449, y: y, w: 48, h: 14, type: 'text', size: 7, align: 'center' },
+      { id: `es${i}_nombreEstudios`, page: 0, x: 228, y: y, w: 190, h: 14, type: 'text', size: 8 },
+      { id: `es${i}_termMes`, page: 0, x: 428, y: y, w: 15, h: 14, type: 'text', size: 9, align: 'center' },
+      { id: `es${i}_termAno`, page: 0, x: 449, y: y, w: 50, h: 14, type: 'text', size: 11, align: 'center' },
       { id: `es${i}_tarjetaProfesional`, page: 0, x: 505, y: y, w: 62, h: 14, type: 'text', size: 6.5 }
     ]).flat(),
     
@@ -172,7 +173,8 @@ function App() {
             w: 8,
             h: 8,
             type: 'chk',
-            group: `idi${i}_${k}`
+            group: `idi${i}_${k}`,
+            size: 10
           }))
         ).flat()
     ]).flat(),
@@ -184,34 +186,34 @@ function App() {
       { empresa: 479.8, depto: 509.8, tel: 539.8, cargo: 569.8 },
       { empresa: 610.2, depto: 640.2, tel: 670.2, cargo: 700.2 }
     ].map((b, i) => [
-      { id: `exp${i}_empresa`, page: 1, x: 65, y: b.empresa + 8, w: 258, h: 14, type: 'text', size: 7 },
-      { id: `exp${i}_publica`, page: 1, x: 345, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${i}_tipo` },
-      { id: `exp${i}_privada`, page: 1, x: 393, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${i}_tipo` },
-      { id: `exp${i}_pais`, page: 1, x: 450, y: b.empresa + 8, w: 99, h: 14, type: 'text', size: 7 },
-      { id: `exp${i}_departamento`, page: 1, x: 65, y: b.depto + 8, w: 169, h: 14, type: 'text', size: 7 },
-      { id: `exp${i}_municipio`, page: 1, x: 243, y: b.depto + 8, w: 166, h: 14, type: 'text', size: 7 },
-      { id: `exp${i}_correo`, page: 1, x: 418, y: b.depto + 8, w: 131, h: 14, type: 'text', size: 6.5 },
-      { id: `exp${i}_telefono`, page: 1, x: 65, y: b.tel + 7, w: 165, h: 15, type: 'text', size: 7 },
-      { id: `exp${i}_ingresoDia`, page: 1, x: 262, y: b.tel + 12, w: 15, h: 10, type: 'text', size: 6.5, align: 'center' },
-      { id: `exp${i}_ingresoMes`, page: 1, x: 311, y: b.tel + 12, w: 16, h: 10, type: 'text', size: 6.5, align: 'center' },
-      { id: `exp${i}_ingresoAno`, page: 1, x: 361, y: b.tel + 12, w: 33, h: 10, type: 'text', size: 6.5, align: 'center' },
-      { id: `exp${i}_retiroDia`, page: 1, x: 429, y: b.tel + 12, w: 15, h: 10, type: 'text', size: 6.5, align: 'center' },
-      { id: `exp${i}_retiroMes`, page: 1, x: 478, y: b.tel + 12, w: 16, h: 10, type: 'text', size: 6.5, align: 'center' },
-      { id: `exp${i}_retiroAno`, page: 1, x: 528, y: b.tel + 12, w: 28, h: 10, type: 'text', size: 6.5, align: 'center' },
-      { id: `exp${i}_cargo`, page: 1, x: 65, y: b.cargo + 9, w: 168, h: 14, type: 'text', size: 7 },
-      { id: `exp${i}_dependencia`, page: 1, x: 243, y: b.cargo + 9, w: 157, h: 14, type: 'text', size: 7 },
-      { id: `exp${i}_direccion`, page: 1, x: 413, y: b.cargo + 9, w: 136, h: 14, type: 'text', size: 7 }
+      { id: `exp${i}_empresa`, page: 1, x: 65, y: b.empresa + 8, w: 258, h: 14, type: 'text', size: 10 },
+      { id: `exp${i}_publica`, page: 1, x: 345, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${i}_tipo`, size:10 },
+      { id: `exp${i}_privada`, page: 1, x: 393, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${i}_tipo`, size:10 },
+      { id: `exp${i}_pais`, page: 1, x: 450, y: b.empresa + 8, w: 99, h: 14, type: 'text', size: 10 },
+      { id: `exp${i}_departamento`, page: 1, x: 65, y: b.depto + 8, w: 169, h: 14, type: 'text', size: 9 },
+      { id: `exp${i}_municipio`, page: 1, x: 243, y: b.depto + 8, w: 166, h: 14, type: 'text', size: 9 },
+      { id: `exp${i}_correo`, page: 1, x: 418, y: b.depto + 8, w: 131, h: 14, type: 'text', size: 9 },
+      { id: `exp${i}_telefono`, page: 1, x: 65, y: b.tel + 7, w: 165, h: 15, type: 'text', size: 9 },
+      { id: `exp${i}_ingresoDia`, page: 1, x: 262, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 10, align: 'center' },
+      { id: `exp${i}_ingresoMes`, page: 1, x: 311, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 10, align: 'center' },
+      { id: `exp${i}_ingresoAno`, page: 1, x: 361, y: b.tel + 11, w: 33, h: 10, type: 'text', size: 10, align: 'center' },
+      { id: `exp${i}_retiroDia`, page: 1, x: 429, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 10, align: 'center' },
+      { id: `exp${i}_retiroMes`, page: 1, x: 478, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 10, align: 'center' },
+      { id: `exp${i}_retiroAno`, page: 1, x: 528, y: b.tel + 11, w: 28, h: 10, type: 'text', size: 10, align: 'center' },
+      { id: `exp${i}_cargo`, page: 1, x: 65, y: b.cargo + 9, w: 168, h: 14, type: 'text', size: 10 },
+      { id: `exp${i}_dependencia`, page: 1, x: 243, y: b.cargo + 9, w: 157, h: 14, type: 'text', size: 10 },
+      { id: `exp${i}_direccion`, page: 1, x: 413, y: b.cargo + 9, w: 136, h: 14, type: 'text', size: 10 }
     ]).flat(),
     
     // Página 3
     ...[['Servidor', 188.2], ['Privado', 216.2], ['Independiente', 244.2], ['Total', 272.2]].map(r => [
-      { id: `tiempo${r[0]}Anos`, page: 2, x: 365, y: r[1] - 3, w: 55, h: 13, type: 'text', align: 'center' },
-      { id: `tiempo${r[0]}Meses`, page: 2, x: 438, y: r[1] - 3, w: 58, h: 13, type: 'text', align: 'center' }
+      { id: `tiempo${r[0]}Anos`, page: 2, x: 365, y: r[1] - 3, w: 55, h: 13, type: 'text', align: 'center', size: 10 },
+      { id: `tiempo${r[0]}Meses`, page: 2, x: 438, y: r[1] - 3, w: 58, h: 13, type: 'text', align: 'center', size: 10 }
     ]).flat(),
     
     { id: 'juramentoSi', page: 2, x: 268, y: 365, w: 9, h: 9, type: 'chk', group: 'juramento' },
     { id: 'juramentoNo', page: 2, x: 300, y: 365, w: 9, h: 9, type: 'chk', group: 'juramento' },
-    { id: 'ciudadFecha', page: 2, x: 220, y: 445, w: 326, h: 13, type: 'text', size: 8 },
+    { id: 'ciudadFecha', page: 2, x: 220, y: 445, w: 326, h: 13, type: 'text', size: 10 },
     { id: 'firmaTexto', page: 2, x: 240, y: 480, w: 150, h: 16, type: 'text', size: 9, style: 'italic' }
   ];
 
@@ -274,6 +276,34 @@ function App() {
 
   const handleFieldChange = (fieldId, value) => {
     setState(prev => ({ ...prev, [fieldId]: value }));
+  };
+
+  // Función para convertir a mayúsculas campos de ubicación
+  const formatFieldValue = (fieldId, value) => {
+    if (!value) return value;
+    
+    // Campos de modalidad - extraer solo el texto antes del paréntesis
+    const modalidadPattern = /^(es\d+_modalidad)$/;
+    if (modalidadPattern.test(fieldId)) {
+      const match = value.toString().match(/^([^\(\[]+)/);
+      return match ? match[1].trim() : value;
+    }
+    
+    // Campos de país, departamento y municipio
+    const locationFields = [
+      'paisNacionalidad', 'paisNac', 'deptoNac', 'municipioNac',
+      'paisCorresp', 'deptoCorresp', 'municipioCorresp',
+      'ciudadFecha'
+    ];
+    
+    // Campos de experiencia (pais, departamento, municipio)
+    const expLocationPattern = /^(exp\d+)_(pais|departamento|municipio)$/;
+    
+    if (locationFields.includes(fieldId) || expLocationPattern.test(fieldId)) {
+      return value.toString().toUpperCase();
+    }
+    
+    return value;
   };
 
   const handleCheckboxChange = (fieldId, checked, group) => {
@@ -347,9 +377,87 @@ function App() {
     return Math.max(minSize, maxSize * ratio);
   };
 
+  // Función para calcular la diferencia entre dos fechas en años y meses
+  const calculateExperienceTime = (startDate, endDate) => {
+    if (!startDate || !endDate) return { years: 0, months: 0 };
+    
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return { years: 0, months: 0 };
+    if (end < start) return { years: 0, months: 0 };
+    
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+    
+    return { years, months };
+  };
+
+  // Calcular el tiempo total de experiencia
+  const getExperienceTimes = () => {
+    let servidorPublicoYears = 0;
+    let servidorPublicoMonths = 0;
+    let privadoYears = 0;
+    let privadoMonths = 0;
+    
+    // Número total de experiencias (4 principales + adicionales)
+    const totalExperiences = 4 + additionalExperiencePages * 4;
+    
+    for (let i = 0; i < totalExperiences; i++) {
+      const ingreso = state[`exp${i}_ingreso`];
+      const retiro = state[`exp${i}_retiro`];
+      const isPublica = state[`exp${i}_publica`];
+      const isPrivada = state[`exp${i}_privada`];
+      
+      if (ingreso && retiro) {
+        const time = calculateExperienceTime(ingreso, retiro);
+        
+        if (isPublica) {
+          servidorPublicoYears += time.years;
+          servidorPublicoMonths += time.months;
+        } else if (isPrivada) {
+          privadoYears += time.years;
+          privadoMonths += time.months;
+        }
+      }
+    }
+    
+    // Convertir meses excedentes a años
+    servidorPublicoYears += Math.floor(servidorPublicoMonths / 12);
+    servidorPublicoMonths = servidorPublicoMonths % 12;
+    
+    privadoYears += Math.floor(privadoMonths / 12);
+    privadoMonths = privadoMonths % 12;
+    
+    // Incluir tiempo independiente (ingresado manualmente)
+    const independienteYears = parseInt(state[`tiempoIndependienteAnos`]) || 0;
+    const independienteMonths = parseInt(state[`tiempoIndependienteMeses`]) || 0;
+    
+    // Calcular total
+    const totalYears = servidorPublicoYears + privadoYears + independienteYears;
+    const totalMonths = servidorPublicoMonths + privadoMonths + independienteMonths;
+    
+    return {
+      servidorPublico: { years: servidorPublicoYears, months: servidorPublicoMonths },
+      privado: { years: privadoYears, months: privadoMonths },
+      total: { 
+        years: totalYears + Math.floor(totalMonths / 12), 
+        months: totalMonths % 12 
+      }
+    };
+  };
+
   const downloadPDF = async () => {
     try {
       showStatus('Generando PDF...');
+      
+      // Calcular tiempos de experiencia
+      const experienceTimes = getExperienceTimes();
       
       // Cargar el PDF original
       const originalPdfBytes = await fetch('/formato-unico-de-hoja-de-vida-persona-natural.pdf')
@@ -373,7 +481,23 @@ function App() {
           
           // Procesar campos de esta página principal
           FIELDS.filter(f => f.page === page.index).forEach(f => {
-            const value = state[f.id];
+            // Usar valores calculados para campos de tiempo
+            let value;
+            if (f.id === 'tiempoServidorAnos') {
+              value = experienceTimes.servidorPublico.years.toString();
+            } else if (f.id === 'tiempoServidorMeses') {
+              value = experienceTimes.servidorPublico.months.toString();
+            } else if (f.id === 'tiempoPrivadoAnos') {
+              value = experienceTimes.privado.years.toString();
+            } else if (f.id === 'tiempoPrivadoMeses') {
+              value = experienceTimes.privado.months.toString();
+            } else if (f.id === 'tiempoTotalAnos') {
+              value = experienceTimes.total.years.toString();
+            } else if (f.id === 'tiempoTotalMeses') {
+              value = experienceTimes.total.months.toString();
+            } else {
+              value = formatFieldValue(f.id, state[f.id]);
+            }
             
             if (f.type === 'chk') {
               if (value) {
@@ -451,7 +575,7 @@ function App() {
             ];
             
             fields.forEach(f => {
-              const value = state[f.id];
+              const value = formatFieldValue(f.id, state[f.id]);
               if (value) {
                 if (f.type === 'chk') {
                   if (value) {
@@ -602,31 +726,53 @@ function App() {
                           />
                         </Document>
                       )}
-                      {FIELDS.filter(f => f.page === page.index).map(f => (
-                        <input
-                          key={f.id}
-                          className="field"
-                          type={f.type === 'chk' ? 'checkbox' : 'text'}
-                          checked={f.type === 'chk' ? state[f.id] || false : undefined}
-                          value={f.type === 'text' ? state[f.id] || '' : undefined}
-                          onChange={(e) => {
-                            if (f.type === 'chk') {
-                              handleCheckboxChange(f.id, e.target.checked, f.group);
-                            } else {
-                              handleFieldChange(f.id, e.target.value);
-                            }
-                          }}
-                          style={{
-                            left: `${(f.x / PAGE_W) * 100}%`,
-                            top: `${(f.y / PAGE_H) * 100}%`,
-                            width: `${(f.w / PAGE_W) * 100}%`,
-                            height: `${(f.h / PAGE_H) * 100}%`,
-                            fontSize: `${Math.max(7, (f.size || 8))}pt`,
-                            textAlign: f.align || 'left',
-                            fontStyle: f.style === 'italic' ? 'italic' : 'normal'
-                          }}
-                        />
-                      ))}
+                      {FIELDS.filter(f => f.page === page.index).map(f => {
+                        // Usar valores calculados para campos de tiempo
+                        let displayValue;
+                        const expTimes = getExperienceTimes();
+                        if (f.id === 'tiempoServidorAnos') {
+                          displayValue = expTimes.servidorPublico.years.toString();
+                        } else if (f.id === 'tiempoServidorMeses') {
+                          displayValue = expTimes.servidorPublico.months.toString();
+                        } else if (f.id === 'tiempoPrivadoAnos') {
+                          displayValue = expTimes.privado.years.toString();
+                        } else if (f.id === 'tiempoPrivadoMeses') {
+                          displayValue = expTimes.privado.months.toString();
+                        } else if (f.id === 'tiempoTotalAnos') {
+                          displayValue = expTimes.total.years.toString();
+                        } else if (f.id === 'tiempoTotalMeses') {
+                          displayValue = expTimes.total.months.toString();
+                        } else {
+                          displayValue = formatFieldValue(f.id, state[f.id]);
+                        }
+                        
+                        return (
+                          <input
+                            key={f.id}
+                            className="field"
+                            type={f.type === 'chk' ? 'checkbox' : 'text'}
+                            checked={f.type === 'chk' ? state[f.id] || false : undefined}
+                            value={f.type === 'text' ? displayValue || '' : undefined}
+                            onChange={(e) => {
+                              if (f.type === 'chk') {
+                                handleCheckboxChange(f.id, e.target.checked, f.group);
+                              } else {
+                                handleFieldChange(f.id, e.target.value);
+                              }
+                            }}
+                            readOnly={f.id.startsWith('tiempo') && f.id !== 'tiempoIndependienteAnos' && f.id !== 'tiempoIndependienteMeses'}
+                            style={{
+                              left: `${(f.x / PAGE_W) * 100}%`,
+                              top: `${(f.y / PAGE_H) * 100}%`,
+                              width: `${(f.w / PAGE_W) * 100}%`,
+                              height: `${(f.h / PAGE_H) * 100}%`,
+                              fontSize: `${Math.max(7, (f.size || 8))}pt`,
+                              textAlign: f.align || 'left',
+                              fontStyle: f.style === 'italic' ? 'italic' : 'normal'
+                            }}
+                          />
+                        );
+                      })}
                     </div>
                   );
                 } else {
@@ -676,7 +822,7 @@ function App() {
                             className="field"
                             type={f.type === 'chk' ? 'checkbox' : 'text'}
                             checked={f.type === 'chk' ? state[f.id] || false : undefined}
-                            value={f.type === 'text' ? state[f.id] || '' : undefined}
+                            value={f.type === 'text' ? formatFieldValue(f.id, state[f.id]) || '' : undefined}
                             onChange={(e) => {
                               if (f.type === 'chk') {
                                 handleCheckboxChange(f.id, e.target.checked, f.group);

@@ -1,10 +1,86 @@
 import { useEffect } from 'react';
-import { paises, departamentosColombia, municipiosPorDepartamento, ciudadesPrincipales } from '../data/colombiaData';
+import { paises, departamentosColombia, municipiosPorDepartamento, ciudadesPrincipales, modalidadesAcademicas } from '../data/colombiaData';
 
 const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExperiencePages }) => {
   const handleChange = (field, value) => {
     setState(prev => ({ ...prev, [field]: value }));
   };
+
+  // Función para calcular la diferencia entre dos fechas en años y meses
+  const calculateExperienceTime = (startDate, endDate) => {
+    if (!startDate || !endDate) return { years: 0, months: 0 };
+    
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    
+    if (isNaN(start.getTime()) || isNaN(end.getTime())) return { years: 0, months: 0 };
+    if (end < start) return { years: 0, months: 0 };
+    
+    let years = end.getFullYear() - start.getFullYear();
+    let months = end.getMonth() - start.getMonth();
+    
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+    
+    return { years, months };
+  };
+
+  // Calcular el tiempo total de experiencia por tipo
+  const getExperienceTimes = () => {
+    let servidorPublicoYears = 0;
+    let servidorPublicoMonths = 0;
+    let privadoYears = 0;
+    let privadoMonths = 0;
+    
+    // Número total de experiencias (4 principales + adicionales)
+    const totalExperiences = 4 + additionalExperiencePages * 4;
+    
+    for (let i = 0; i < totalExperiences; i++) {
+      const ingreso = state[`exp${i}_ingreso`];
+      const retiro = state[`exp${i}_retiro`];
+      const isPublica = state[`exp${i}_publica`];
+      const isPrivada = state[`exp${i}_privada`];
+      
+      if (ingreso && retiro) {
+        const time = calculateExperienceTime(ingreso, retiro);
+        
+        if (isPublica) {
+          servidorPublicoYears += time.years;
+          servidorPublicoMonths += time.months;
+        } else if (isPrivada) {
+          privadoYears += time.years;
+          privadoMonths += time.months;
+        }
+      }
+    }
+    
+    // Convertir meses excedentes a años
+    servidorPublicoYears += Math.floor(servidorPublicoMonths / 12);
+    servidorPublicoMonths = servidorPublicoMonths % 12;
+    
+    privadoYears += Math.floor(privadoMonths / 12);
+    privadoMonths = privadoMonths % 12;
+    
+    // Incluir tiempo independiente (ingresado manualmente)
+    const independienteYears = parseInt(state[`tiempoIndependienteAnos`]) || 0;
+    const independienteMonths = parseInt(state[`tiempoIndependienteMeses`]) || 0;
+    
+    // Calcular total
+    const totalYears = servidorPublicoYears + privadoYears + independienteYears;
+    const totalMonths = servidorPublicoMonths + privadoMonths + independienteMonths;
+    
+    return {
+      servidorPublico: { years: servidorPublicoYears, months: servidorPublicoMonths },
+      privado: { years: privadoYears, months: privadoMonths },
+      total: { 
+        years: totalYears + Math.floor(totalMonths / 12), 
+        months: totalMonths % 12 
+      }
+    };
+  };
+
 
   const handleCheckbox = (field, checked, group) => {
     setState(prev => {
@@ -417,11 +493,24 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
             <div className="form-grid">
               <div className="form-field">
                 <label>Modalidad</label>
-                <input
-                  type="text"
+                <select
                   value={state[`es${i}_modalidad`] || ''}
                   onChange={(e) => handleChange(`es${i}_modalidad`, e.target.value)}
-                />
+                >
+                  <option value="">Seleccione una modalidad</option>
+                  {modalidadesAcademicas.map(modalidad => (
+                    <option key={modalidad} value={modalidad}>{modalidad}</option>
+                  ))}
+                </select>
+                {state[`es${i}_modalidad`] === 'Otra' && (
+                  <input
+                    type="text"
+                    placeholder="Especifique la modalidad"
+                    value={state[`es${i}_modalidadOtra`] || ''}
+                    onChange={(e) => handleChange(`es${i}_modalidadOtra`, e.target.value)}
+                    style={{ marginTop: '5px' }}
+                  />
+                )}
               </div>
               <div className="form-field">
                 <label>Semestres</label>
@@ -912,27 +1001,82 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
 
       {/* Tiempo de Experiencia */}
       <div className="form-section">
-        <h3>Tiempo de Experiencia</h3>
+        <h3>Tiempo de Experiencia (Calculado automáticamente)</h3>
         <div className="experience-time-grid">
-          {['Servidor', 'Privado', 'Independiente', 'Total'].map(tipo => (
-            <div key={tipo} className="experience-time-item">
-              <label>{tipo}</label>
-              <div className="date-group compact">
-                <input
-                  type="text"
-                  placeholder="Años"
-                  value={state[`tiempo${tipo}Anos`] || ''}
-                  onChange={(e) => handleChange(`tiempo${tipo}Anos`, e.target.value)}
-                />
-                <input
-                  type="text"
-                  placeholder="Meses"
-                  value={state[`tiempo${tipo}Meses`] || ''}
-                  onChange={(e) => handleChange(`tiempo${tipo}Meses`, e.target.value)}
-                />
-              </div>
+          <div className="experience-time-item">
+            <label>Servidor</label>
+            <div className="date-group compact">
+              <input
+                type="text"
+                placeholder="Años"
+                value={getExperienceTimes().servidorPublico.years.toString()}
+                readOnly
+                title="Calculado automáticamente"
+              />
+              <input
+                type="text"
+                placeholder="Meses"
+                value={getExperienceTimes().servidorPublico.months.toString()}
+                readOnly
+                title="Calculado automáticamente"
+              />
             </div>
-          ))}
+          </div>
+          <div className="experience-time-item">
+            <label>Privado</label>
+            <div className="date-group compact">
+              <input
+                type="text"
+                placeholder="Años"
+                value={getExperienceTimes().privado.years.toString()}
+                readOnly
+                title="Calculado automáticamente"
+              />
+              <input
+                type="text"
+                placeholder="Meses"
+                value={getExperienceTimes().privado.months.toString()}
+                readOnly
+                title="Calculado automáticamente"
+              />
+            </div>
+          </div>
+          <div className="experience-time-item">
+            <label>Independiente</label>
+            <div className="date-group compact">
+              <input
+                type="text"
+                placeholder="Años"
+                value={state[`tiempoIndependienteAnos`] || ''}
+                onChange={(e) => handleChange(`tiempoIndependienteAnos`, e.target.value)}
+              />
+              <input
+                type="text"
+                placeholder="Meses"
+                value={state[`tiempoIndependienteMeses`] || ''}
+                onChange={(e) => handleChange(`tiempoIndependienteMeses`, e.target.value)}
+              />
+            </div>
+          </div>
+          <div className="experience-time-item">
+            <label>Total</label>
+            <div className="date-group compact">
+              <input
+                type="text"
+                placeholder="Años"
+                value={getExperienceTimes().total.years.toString()}
+                readOnly
+                title="Calculado automáticamente"
+              />
+              <input
+                type="text"
+                placeholder="Meses"
+                value={getExperienceTimes().total.months.toString()}
+                readOnly
+                title="Calculado automáticamente"
+              />
+            </div>
+          </div>
         </div>
       </div>
 

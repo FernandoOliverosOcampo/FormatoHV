@@ -1,9 +1,12 @@
+import { modalidadesAcademicas } from '../data/colombiaData';
+
 const DynamicEducation = ({ education, setEducation }) => {
   const addEducation = () => {
     setEducation([
       ...education,
       {
         modalidad: '',
+        modalidadOtra: '',
         semestres: '',
         graduado: 'si',
         nombreEstudios: '',
@@ -43,11 +46,24 @@ const DynamicEducation = ({ education, setEducation }) => {
           <div className="dynamic-item-fields">
             <div className="dynamic-item-field">
               <label>Modalidad</label>
-              <input
-                type="text"
+              <select
                 value={edu.modalidad}
                 onChange={(e) => updateEducation(index, 'modalidad', e.target.value)}
-              />
+              >
+                <option value="">Seleccione una modalidad</option>
+                {modalidadesAcademicas.map(modalidad => (
+                  <option key={modalidad} value={modalidad}>{modalidad}</option>
+                ))}
+              </select>
+              {edu.modalidad === 'Otra' && (
+                <input
+                  type="text"
+                  placeholder="Especifique la modalidad"
+                  value={edu.modalidadOtra || ''}
+                  onChange={(e) => updateEducation(index, 'modalidadOtra', e.target.value)}
+                  style={{ marginTop: '5px' }}
+                />
+              )}
             </div>
             <div className="dynamic-item-field">
               <label>Semestres</label>

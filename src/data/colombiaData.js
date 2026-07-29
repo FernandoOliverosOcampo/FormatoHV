@@ -130,3 +130,14 @@ export const ciudadesPrincipales = [
   'Mitú',
   'San José del Guaviare'
 ];
+
+export const modalidadesAcademicas = [
+  'TC (Técnica)',
+  'TL (Tecnológica)',
+  'TE (Tecnológica Especializada)',
+  'UN (Universitaria)',
+  'ES (Especialización)',
+  'MG (Maestría o Magister)',
+  'DOC (Doctorado o PHD)',
+  'Otra'
+];
