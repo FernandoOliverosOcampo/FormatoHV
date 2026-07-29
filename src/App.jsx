@@ -214,7 +214,7 @@ function App() {
     { id: 'juramentoSi', page: 2, x: 268, y: 365, w: 9, h: 9, type: 'chk', group: 'juramento' },
     { id: 'juramentoNo', page: 2, x: 300, y: 365, w: 9, h: 9, type: 'chk', group: 'juramento' },
     { id: 'ciudadFecha', page: 2, x: 220, y: 445, w: 326, h: 13, type: 'text', size: 10 },
-    { id: 'firmaTexto', page: 2, x: 240, y: 480, w: 150, h: 16, type: 'text', size: 9, style: 'italic' }
+    { id: 'firmaTexto', page: 2, x: 240, y: 475, w: 150, h: 16, type: 'text', size: 9, style: 'italic' }
   ];
 
   // Cargar estado desde localStorage
@@ -639,7 +639,7 @@ function App() {
             // Ajustar posición de la firma al campo correcto (FIRMA DEL SERVIDOR PÚBLICO O CONTRATISTA)
             page.drawImage(signatureImage, {
               x: 240,
-              y: PAGE_H - 500,
+              y: PAGE_H - 490,
               width: width,
               height: height
             });
