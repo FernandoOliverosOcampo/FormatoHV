@@ -87,28 +87,28 @@ function App() {
   const FIELDS = [
     // Página 1
     { id: 'entidadReceptora', page: 0, x: 441, y: 60, w: 120, h: 12, type: 'text', size: 7 },
-    { id: 'primerApellido', page: 0, x: 64, y: 179, w: 158, h: 16, type: 'text' },
-    { id: 'segundoApellido', page: 0, x: 230, y: 179, w: 163, h: 16, type: 'text' },
-    { id: 'nombres', page: 0, x: 399, y: 179, w: 148, h: 16, type: 'text' },
+    { id: 'primerApellido', page: 0, x: 64, y: 179, w: 158, h: 16, type: 'text', size: 9 },
+    { id: 'segundoApellido', page: 0, x: 230, y: 179, w: 163, h: 16, type: 'text', size: 9 },
+    { id: 'nombres', page: 0, x: 399, y: 179, w: 148, h: 16, type: 'text', size: 9 },
     
     // Tipo documento
-    { id: 'docCC', page: 0, x: 81, y: 210, w: 9, h: 9, type: 'chk', group: 'doc' },
+    { id: 'docCC', page: 0, x: 81.5, y: 210, w: 9, h: 9, type: 'chk', group: 'doc' },
     { id: 'docCE', page: 0, x: 112, y: 210, w: 9, h: 9, type: 'chk', group: 'doc' },
     { id: 'docPAS', page: 0, x: 147, y: 210, w: 9, h: 9, type: 'chk', group: 'doc' },
-    { id: 'numDocumento', page: 0, x: 182, y: 210, w: 112, h: 14, type: 'text' },
+    { id: 'numDocumento', page: 0, x: 182, y: 208, w: 112, h: 14, type: 'text', size: 10 },
     
     // Sexo
     { id: 'sexoF', page: 0, x: 316, y: 210, w: 9, h: 9, type: 'chk', group: 'sexo' },
     { id: 'sexoM', page: 0, x: 340, y: 210, w: 9, h: 9, type: 'chk', group: 'sexo' },
     
     // Nacionalidad
-    { id: 'nacCol', page: 0, x: 383, y: 209, w: 9, h: 9, type: 'chk', group: 'nacionalidad' },
-    { id: 'nacExt', page: 0, x: 455, y: 209, w: 9, h: 9, type: 'chk', group: 'nacionalidad' },
-    { id: 'paisNacionalidad', page: 0, x: 480, y: 205, w: 68, h: 14, type: 'text', size: 7 },
+    { id: 'nacCol', page: 0, x: 383, y: 210, w: 9, h: 9, type: 'chk', group: 'nacionalidad' },
+    { id: 'nacExt', page: 0, x: 455, y: 210, w: 9, h: 9, type: 'chk', group: 'nacionalidad' },
+    { id: 'paisNacionalidad', page: 0, x: 480, y: 205, w: 68, h: 14, type: 'text', size: 10 },
     
     // Libreta militar
-    { id: 'libretaPrimera', page: 0, x: 145, y: 240, w: 9, h: 9, type: 'chk', group: 'libreta' },
-    { id: 'libretaSegunda', page: 0, x: 260, y: 240, w: 9, h: 9, type: 'chk', group: 'libreta' },
+    { id: 'libretaPrimera', page: 0, x: 144.5, y: 240.5, w: 9, h: 9, type: 'chk', group: 'libreta' },
+    { id: 'libretaSegunda', page: 0, x: 260, y: 240.5, w: 9, h: 9, type: 'chk', group: 'libreta' },
     { id: 'libretaNumero', page: 0, x: 336, y: 236, w: 135, h: 14, type: 'text' },
     { id: 'libretaDM', page: 0, x: 495, y: 236, w: 58, h: 14, type: 'text' },
     
@@ -118,16 +118,16 @@ function App() {
     { id: 'fechaNacAno', page: 0, x: 235, y: 273, w: 34, h: 14, type: 'text', align: 'center', size: 10 },
     
     // Lugar nacimiento
-    { id: 'paisNac', page: 0, x: 112, y: 293, w: 155, h: 14, type: 'text' },
-    { id: 'deptoNac', page: 0, x: 112, y: 310, w: 155, h: 14, type: 'text' },
-    { id: 'municipioNac', page: 0, x: 112, y: 327, w: 155, h: 14, type: 'text' },
+    { id: 'paisNac', page: 0, x: 112, y: 293, w: 155, h: 14, type: 'text', size: 9 },
+    { id: 'deptoNac', page: 0, x: 112, y: 310, w: 155, h: 14, type: 'text', size: 9 },
+    { id: 'municipioNac', page: 0, x: 112, y: 327, w: 155, h: 14, type: 'text', size: 9 },
     
     // Dirección correspondencia
     { id: 'direccionCorresp', page: 0, x: 291, y: 270, w: 258, h: 14, type: 'text', size: 10 },
-    { id: 'paisCorresp', page: 0, x: 315, y: 293, w: 122, h: 14, type: 'text' },
-    { id: 'deptoCorresp', page: 0, x: 473, y: 293, w: 76, h: 14, type: 'text' },
-    { id: 'municipioCorresp', page: 0, x: 342, y: 309, w: 212, h: 14, type: 'text' },
-    { id: 'telefono', page: 0, x: 342, y: 327, w: 96, h: 14, type: 'text' },
+    { id: 'paisCorresp', page: 0, x: 315, y: 293, w: 122, h: 14, type: 'text', size: 9 },
+    { id: 'deptoCorresp', page: 0, x: 473, y: 293, w: 76, h: 14, type: 'text', size: 9 },
+    { id: 'municipioCorresp', page: 0, x: 342, y: 309, w: 212, h: 14, type: 'text', size: 9 },
+    { id: 'telefono', page: 0, x: 342, y: 327, w: 96, h: 14, type: 'text', size: 9 },
     { id: 'email', page: 0, x: 465, y: 327, w: 105, h: 14, type: 'text', size: 8 },
     
     // Grados educación básica
@@ -152,8 +152,8 @@ function App() {
     ...[580, 598.3, 616.6, 634.9, 653.2].map((y, i) => [
       { id: `es${i}_modalidad`, page: 0, x: 62, y: y, w: 45, h: 14, type: 'text', size: 10 },
       { id: `es${i}_semestres`, page: 0, x: 113, y: y, w: 60, h: 14, type: 'text', size: 9, align: 'center' },
-      { id: `es${i}_gradSi`, page: 0, x: 187, y: y + -1, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
-      { id: `es${i}_gradNo`, page: 0, x: 209, y: y - 0, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
+      { id: `es${i}_gradSi`, page: 0, x: 183, y: y + 3, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
+      { id: `es${i}_gradNo`, page: 0, x: 206, y: y + 3, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
       { id: `es${i}_nombreEstudios`, page: 0, x: 228, y: y, w: 190, h: 14, type: 'text', size: 8 },
       { id: `es${i}_termMes`, page: 0, x: 428, y: y, w: 15, h: 14, type: 'text', size: 9, align: 'center' },
       { id: `es${i}_termAno`, page: 0, x: 449, y: y, w: 50, h: 14, type: 'text', size: 11, align: 'center' },
@@ -186,23 +186,23 @@ function App() {
       { empresa: 479.8, depto: 509.8, tel: 539.8, cargo: 569.8 },
       { empresa: 610.2, depto: 640.2, tel: 670.2, cargo: 700.2 }
     ].map((b, i) => [
-      { id: `exp${i}_empresa`, page: 1, x: 65, y: b.empresa + 8, w: 258, h: 14, type: 'text', size: 10 },
+      { id: `exp${i}_empresa`, page: 1, x: 65, y: b.empresa + 8, w: 258, h: 14, type: 'text', size: 9 },
       { id: `exp${i}_publica`, page: 1, x: 345, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${i}_tipo`, size:10 },
       { id: `exp${i}_privada`, page: 1, x: 393, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${i}_tipo`, size:10 },
-      { id: `exp${i}_pais`, page: 1, x: 450, y: b.empresa + 8, w: 99, h: 14, type: 'text', size: 10 },
+      { id: `exp${i}_pais`, page: 1, x: 445, y: b.empresa + 8, w: 99, h: 14, type: 'text', size: 9 },
       { id: `exp${i}_departamento`, page: 1, x: 65, y: b.depto + 8, w: 169, h: 14, type: 'text', size: 9 },
       { id: `exp${i}_municipio`, page: 1, x: 243, y: b.depto + 8, w: 166, h: 14, type: 'text', size: 9 },
       { id: `exp${i}_correo`, page: 1, x: 418, y: b.depto + 8, w: 131, h: 14, type: 'text', size: 9 },
       { id: `exp${i}_telefono`, page: 1, x: 65, y: b.tel + 7, w: 165, h: 15, type: 'text', size: 9 },
-      { id: `exp${i}_ingresoDia`, page: 1, x: 262, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 10, align: 'center' },
-      { id: `exp${i}_ingresoMes`, page: 1, x: 311, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 10, align: 'center' },
-      { id: `exp${i}_ingresoAno`, page: 1, x: 361, y: b.tel + 11, w: 33, h: 10, type: 'text', size: 10, align: 'center' },
-      { id: `exp${i}_retiroDia`, page: 1, x: 429, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 10, align: 'center' },
-      { id: `exp${i}_retiroMes`, page: 1, x: 478, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 10, align: 'center' },
-      { id: `exp${i}_retiroAno`, page: 1, x: 528, y: b.tel + 11, w: 28, h: 10, type: 'text', size: 10, align: 'center' },
-      { id: `exp${i}_cargo`, page: 1, x: 65, y: b.cargo + 9, w: 168, h: 14, type: 'text', size: 10 },
-      { id: `exp${i}_dependencia`, page: 1, x: 243, y: b.cargo + 9, w: 157, h: 14, type: 'text', size: 10 },
-      { id: `exp${i}_direccion`, page: 1, x: 413, y: b.cargo + 9, w: 136, h: 14, type: 'text', size: 10 }
+      { id: `exp${i}_ingresoDia`, page: 1, x: 262, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 9, align: 'center' },
+      { id: `exp${i}_ingresoMes`, page: 1, x: 311, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 9, align: 'center' },
+      { id: `exp${i}_ingresoAno`, page: 1, x: 361, y: b.tel + 11, w: 33, h: 10, type: 'text', size: 9, align: 'center' },
+      { id: `exp${i}_retiroDia`, page: 1, x: 429, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 9, align: 'center' },
+      { id: `exp${i}_retiroMes`, page: 1, x: 478, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 9, align: 'center' },
+      { id: `exp${i}_retiroAno`, page: 1, x: 528, y: b.tel + 11, w: 28, h: 10, type: 'text', size: 9, align: 'center' },
+      { id: `exp${i}_cargo`, page: 1, x: 65, y: b.cargo + 9, w: 168, h: 14, type: 'text', size: 9 },
+      { id: `exp${i}_dependencia`, page: 1, x: 243, y: b.cargo + 9, w: 157, h: 14, type: 'text', size: 9 },
+      { id: `exp${i}_direccion`, page: 1, x: 413, y: b.cargo + 9, w: 136, h: 14, type: 'text', size: 9 }
     ]).flat(),
     
     // Página 3
@@ -799,23 +799,23 @@ function App() {
                       ].map((b, expI) => {
                         const expIndex = baseExpIndex + expI;
                         return [
-                          { id: `exp${expIndex}_empresa`, x: 65, y: b.empresa + 8, w: 258 },
-                          { id: `exp${expIndex}_publica`, x: 345, y: b.empresa + 12, w: 8, h: 8, type: 'chk' },
-                          { id: `exp${expIndex}_privada`, x: 393, y: b.empresa + 12, w: 8, h: 8, type: 'chk' },
-                          { id: `exp${expIndex}_pais`, x: 450, y: b.empresa + 8, w: 99 },
-                          { id: `exp${expIndex}_departamento`, x: 65, y: b.depto + 8, w: 169 },
-                          { id: `exp${expIndex}_municipio`, x: 243, y: b.depto + 8, w: 166 },
-                          { id: `exp${expIndex}_correo`, x: 418, y: b.depto + 8, w: 131 },
-                          { id: `exp${expIndex}_telefono`, x: 65, y: b.tel + 7, w: 165, h: 15 },
-                          { id: `exp${expIndex}_ingresoDia`, x: 262, y: b.tel + 12, w: 15, h: 10 },
-                          { id: `exp${expIndex}_ingresoMes`, x: 311, y: b.tel + 12, w: 16, h: 10 },
-                          { id: `exp${expIndex}_ingresoAno`, x: 361, y: b.tel + 12, w: 33, h: 10 },
-                          { id: `exp${expIndex}_retiroDia`, x: 429, y: b.tel + 12, w: 15, h: 10 },
-                          { id: `exp${expIndex}_retiroMes`, x: 478, y: b.tel + 12, w: 16, h: 10 },
-                          { id: `exp${expIndex}_retiroAno`, x: 528, y: b.tel + 12, w: 28, h: 10 },
-                          { id: `exp${expIndex}_cargo`, x: 65, y: b.cargo + 9, w: 168 },
-                          { id: `exp${expIndex}_dependencia`, x: 243, y: b.cargo + 9, w: 157 },
-                          { id: `exp${expIndex}_direccion`, x: 413, y: b.cargo + 9, w: 136 }
+                          { id: `exp${expIndex}_empresa`, x: 65, y: b.empresa + 8, w: 258, h: 14, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_publica`, x: 345, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${expIndex}_tipo`, size: 10 },
+                          { id: `exp${expIndex}_privada`, x: 393, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${expIndex}_tipo`, size: 10 },
+                          { id: `exp${expIndex}_pais`, x: 445, y: b.empresa + 8, w: 99, h: 14, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_departamento`, x: 65, y: b.depto + 8, w: 169, h: 14, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_municipio`, x: 243, y: b.depto + 8, w: 166, h: 14, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_correo`, x: 418, y: b.depto + 8, w: 131, h: 14, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_telefono`, x: 65, y: b.tel + 7, w: 165, h: 15, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_ingresoDia`, x: 262, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 9, align: 'center' },
+                          { id: `exp${expIndex}_ingresoMes`, x: 311, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 9, align: 'center' },
+                          { id: `exp${expIndex}_ingresoAno`, x: 361, y: b.tel + 11, w: 33, h: 10, type: 'text', size: 9, align: 'center' },
+                          { id: `exp${expIndex}_retiroDia`, x: 429, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 9, align: 'center' },
+                          { id: `exp${expIndex}_retiroMes`, x: 478, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 9, align: 'center' },
+                          { id: `exp${expIndex}_retiroAno`, x: 528, y: b.tel + 11, w: 28, h: 10, type: 'text', size: 9, align: 'center' },
+                          { id: `exp${expIndex}_cargo`, x: 65, y: b.cargo + 9, w: 168, h: 14, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_dependencia`, x: 243, y: b.cargo + 9, w: 157, h: 14, type: 'text', size: 9 },
+                          { id: `exp${expIndex}_direccion`, x: 413, y: b.cargo + 9, w: 136, h: 14, type: 'text', size: 9 }
                         ].map(f => (
                           <input
                             key={f.id}
