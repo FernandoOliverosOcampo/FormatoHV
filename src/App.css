@@ -484,18 +484,28 @@ body.clean input.field[type="checkbox"]:checked::after {
 
 .form-field input[type="text"],
 .form-field input[type="email"],
-.form-field input[type="date"] {
+.form-field input[type="date"],
+.form-field select {
   padding: 8px 12px;
   border: 1px solid #ced4da;
   border-radius: 4px;
   font-size: 13px;
   transition: border-color 0.15s;
+  background: white;
+  cursor: pointer;
 }
 
-.form-field input:focus {
+.form-field input:focus,
+.form-field select:focus {
   outline: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(21, 95, 208, 0.1);
+}
+
+.form-field select:disabled {
+  background: #f8f9fa;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .checkbox-group {

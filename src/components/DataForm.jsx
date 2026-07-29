@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { paises, departamentosColombia, municipiosPorDepartamento, ciudadesPrincipales } from '../data/colombiaData';
 
 const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExperiencePages }) => {
   const handleChange = (field, value) => {
@@ -11,7 +12,7 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
       if (checked && group) {
         // Desmarcar otros checkboxes del mismo grupo
         Object.keys(prev).forEach(key => {
-          if (key !== field && key.startsWith(group.split('_')[0])) {
+          if (key !== field && key.startsWith(group)) {
             newState[key] = false;
           }
         });
@@ -44,6 +45,13 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
       }
     }
     return '';
+  };
+
+  // Función para manejar cambio de departamento y limpiar municipio
+  const handleDepartamentoChange = (deptoField, municipioField, value) => {
+    handleChange(deptoField, value);
+    // Limpiar el municipio cuando cambia el departamento
+    handleChange(municipioField, '');
   };
 
   return (
@@ -174,11 +182,15 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
           </div>
           <div className="form-field">
             <label>País de Nacionalidad</label>
-            <input
-              type="text"
+            <select
               value={state.paisNacionalidad || ''}
               onChange={(e) => handleChange('paisNacionalidad', e.target.value)}
-            />
+            >
+              <option value="">Seleccione un país</option>
+              {paises.map(pais => (
+                <option key={pais} value={pais}>{pais}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -247,27 +259,40 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
           </div>
           <div className="form-field">
             <label>País de Nacimiento</label>
-            <input
-              type="text"
+            <select
               value={state.paisNac || ''}
               onChange={(e) => handleChange('paisNac', e.target.value)}
-            />
+            >
+              <option value="">Seleccione un país</option>
+              {paises.map(pais => (
+                <option key={pais} value={pais}>{pais}</option>
+              ))}
+            </select>
           </div>
           <div className="form-field">
             <label>Departamento de Nacimiento</label>
-            <input
-              type="text"
+            <select
               value={state.deptoNac || ''}
-              onChange={(e) => handleChange('deptoNac', e.target.value)}
-            />
+              onChange={(e) => handleDepartamentoChange('deptoNac', 'municipioNac', e.target.value)}
+            >
+              <option value="">Seleccione un departamento</option>
+              {departamentosColombia.map(depto => (
+                <option key={depto} value={depto}>{depto}</option>
+              ))}
+            </select>
           </div>
           <div className="form-field">
             <label>Municipio de Nacimiento</label>
-            <input
-              type="text"
+            <select
               value={state.municipioNac || ''}
               onChange={(e) => handleChange('municipioNac', e.target.value)}
-            />
+              disabled={!state.deptoNac}
+            >
+              <option value="">Seleccione un municipio</option>
+              {state.deptoNac && municipiosPorDepartamento[state.deptoNac]?.map(municipio => (
+                <option key={municipio} value={municipio}>{municipio}</option>
+              ))}
+            </select>
           </div>
         </div>
       </div>
@@ -286,27 +311,40 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
           </div>
           <div className="form-field">
             <label>País</label>
-            <input
-              type="text"
+            <select
               value={state.paisCorresp || ''}
               onChange={(e) => handleChange('paisCorresp', e.target.value)}
-            />
+            >
+              <option value="">Seleccione un país</option>
+              {paises.map(pais => (
+                <option key={pais} value={pais}>{pais}</option>
+              ))}
+            </select>
           </div>
           <div className="form-field">
             <label>Departamento</label>
-            <input
-              type="text"
+            <select
               value={state.deptoCorresp || ''}
-              onChange={(e) => handleChange('deptoCorresp', e.target.value)}
-            />
+              onChange={(e) => handleDepartamentoChange('deptoCorresp', 'municipioCorresp', e.target.value)}
+            >
+              <option value="">Seleccione un departamento</option>
+              {departamentosColombia.map(depto => (
+                <option key={depto} value={depto}>{depto}</option>
+              ))}
+            </select>
           </div>
           <div className="form-field">
             <label>Municipio</label>
-            <input
-              type="text"
+            <select
               value={state.municipioCorresp || ''}
               onChange={(e) => handleChange('municipioCorresp', e.target.value)}
-            />
+              disabled={!state.deptoCorresp}
+            >
+              <option value="">Seleccione un municipio</option>
+              {state.deptoCorresp && municipiosPorDepartamento[state.deptoCorresp]?.map(municipio => (
+                <option key={municipio} value={municipio}>{municipio}</option>
+              ))}
+            </select>
           </div>
           <div className="form-field">
             <label>Teléfono</label>
@@ -593,27 +631,40 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
               </div>
               <div className="form-field">
                 <label>País</label>
-                <input
-                  type="text"
+                <select
                   value={state[`exp${i}_pais`] || ''}
                   onChange={(e) => handleChange(`exp${i}_pais`, e.target.value)}
-                />
+                >
+                  <option value="">Seleccione un país</option>
+                  {paises.map(pais => (
+                    <option key={pais} value={pais}>{pais}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-field">
                 <label>Departamento</label>
-                <input
-                  type="text"
+                <select
                   value={state[`exp${i}_departamento`] || ''}
-                  onChange={(e) => handleChange(`exp${i}_departamento`, e.target.value)}
-                />
+                  onChange={(e) => handleDepartamentoChange(`exp${i}_departamento`, `exp${i}_municipio`, e.target.value)}
+                >
+                  <option value="">Seleccione un departamento</option>
+                  {departamentosColombia.map(depto => (
+                    <option key={depto} value={depto}>{depto}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-field">
                 <label>Municipio</label>
-                <input
-                  type="text"
+                <select
                   value={state[`exp${i}_municipio`] || ''}
                   onChange={(e) => handleChange(`exp${i}_municipio`, e.target.value)}
-                />
+                  disabled={!state[`exp${i}_departamento`]}
+                >
+                  <option value="">Seleccione un municipio</option>
+                  {state[`exp${i}_departamento`] && municipiosPorDepartamento[state[`exp${i}_departamento`]]?.map(municipio => (
+                    <option key={municipio} value={municipio}>{municipio}</option>
+                  ))}
+                </select>
               </div>
               <div className="form-field">
                 <label>Correo</label>
@@ -747,27 +798,40 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
                       </div>
                       <div className="form-field">
                         <label>País</label>
-                        <input
-                          type="text"
+                        <select
                           value={state[`exp${expIndex}_pais`] || ''}
                           onChange={(e) => handleChange(`exp${expIndex}_pais`, e.target.value)}
-                        />
+                        >
+                          <option value="">Seleccione un país</option>
+                          {paises.map(pais => (
+                            <option key={pais} value={pais}>{pais}</option>
+                          ))}
+                        </select>
                       </div>
                       <div className="form-field">
                         <label>Departamento</label>
-                        <input
-                          type="text"
+                        <select
                           value={state[`exp${expIndex}_departamento`] || ''}
-                          onChange={(e) => handleChange(`exp${expIndex}_departamento`, e.target.value)}
-                        />
+                          onChange={(e) => handleDepartamentoChange(`exp${expIndex}_departamento`, `exp${expIndex}_municipio`, e.target.value)}
+                        >
+                          <option value="">Seleccione un departamento</option>
+                          {departamentosColombia.map(depto => (
+                            <option key={depto} value={depto}>{depto}</option>
+                          ))}
+                        </select>
                       </div>
                       <div className="form-field">
                         <label>Municipio</label>
-                        <input
-                          type="text"
+                        <select
                           value={state[`exp${expIndex}_municipio`] || ''}
                           onChange={(e) => handleChange(`exp${expIndex}_municipio`, e.target.value)}
-                        />
+                          disabled={!state[`exp${expIndex}_departamento`]}
+                        >
+                          <option value="">Seleccione un municipio</option>
+                          {state[`exp${expIndex}_departamento`] && municipiosPorDepartamento[state[`exp${expIndex}_departamento`]]?.map(municipio => (
+                            <option key={municipio} value={municipio}>{municipio}</option>
+                          ))}
+                        </select>
                       </div>
                       <div className="form-field">
                         <label>Correo</label>
@@ -899,11 +963,15 @@ const DataForm = ({ state, setState, additionalExperiencePages, setAdditionalExp
           </div>
           <div className="form-field">
             <label>Ciudad y Fecha de Diligenciamiento</label>
-            <input
-              type="text"
+            <select
               value={state.ciudadFecha || ''}
               onChange={(e) => handleChange('ciudadFecha', e.target.value)}
-            />
+            >
+              <option value="">Seleccione una ciudad</option>
+              {ciudadesPrincipales.map(ciudad => (
+                <option key={ciudad} value={ciudad}>{ciudad}</option>
+              ))}
+            </select>
           </div>
           <div className="form-field">
             <label>Texto de Firma (opcional)</label>
