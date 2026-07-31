@@ -144,12 +144,12 @@ function App() {
     })),
     
     // Título obtenido
-    { id: 'tituloObtenido', page: 0, x: 356, y: 432, w: 256, h: 13, type: 'text', size: 7 },
+    { id: 'tituloObtenido', page: 0, x: 356, y: 432, w: 180, h: 13, type: 'text', size: 4.5 },
     { id: 'fechaGradoMes', page: 0, x: 350, y: 462, w: 17, h: 13, type: 'text', align: 'center',size: 10 },
     { id: 'fechaGradoAno', page: 0, x: 405, y: 462, w: 45, h: 13, type: 'text', align: 'center', size: 10 },
     
     // Educación superior (5 filas)
-    ...[580, 598.3, 616.6, 634.9, 653.2].map((y, i) => [
+    ...[580.5, 597.3, 614.6, 631.9, 649.2].map((y, i) => [
       { id: `es${i}_modalidad`, page: 0, x: 62, y: y, w: 45, h: 14, type: 'text', size: 10 },
       { id: `es${i}_semestres`, page: 0, x: 113, y: y, w: 60, h: 14, type: 'text', size: 9, align: 'center' },
       { id: `es${i}_gradSi`, page: 0, x: 183, y: y + 3, w: 8, h: 8, type: 'chk', group: `es${i}_grad` },
