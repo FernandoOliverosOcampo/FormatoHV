@@ -128,7 +128,7 @@ function App() {
     { id: 'deptoCorresp', page: 0, x: 473, y: 293, w: 76, h: 14, type: 'text', size: 9 },
     { id: 'municipioCorresp', page: 0, x: 342, y: 309, w: 212, h: 14, type: 'text', size: 9 },
     { id: 'telefono', page: 0, x: 342, y: 327, w: 96, h: 14, type: 'text', size: 9 },
-    { id: 'email', page: 0, x: 465, y: 327, w: 105, h: 14, type: 'text', size: 8 },
+    { id: 'email', page: 0, x: 465, y: 327, w: 105, h: 14, type: 'text', size: 7 },
     
     // Grados educación básica
     ...[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].map((g, i) => ({
