@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { Document, Page, pdfjs } from 'react-pdf';
-import { Document as DocxDocument, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel } from 'docx';
 import SignaturePad from './components/SignatureCanvas';
 import DataForm from './components/DataForm';
 import PageOrganizer from './components/PageOrganizer';
@@ -539,170 +538,78 @@ function App() {
           // Página de experiencia - copiar página 2 como plantilla
           const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [1]);
           newPdfDoc.addPage(copiedPage);
-
+          
           const newPage = newPdfDoc.getPage(newPdfDoc.getPageCount() - 1);
-
-          // Dibujar rectángulos blancos sobre las áreas de texto de las 4 experiencias originales
-          // para borrar el contenido existente antes de escribir los nuevos datos
+          
+          // Cada página adicional tiene 4 experiencias
+          const baseExpIndex = 4 + page.index * 4;
+          
+          // Usar las mismas coordenadas que la página 2 (página 1 en el array)
           const experiencePositions = [
             { empresa: 219.6, depto: 249.6, tel: 279.6, cargo: 309.6 },
             { empresa: 350.2, depto: 380.2, tel: 410.2, cargo: 440.2 },
             { empresa: 479.8, depto: 509.8, tel: 539.8, cargo: 569.8 },
             { empresa: 610.2, depto: 640.2, tel: 670.2, cargo: 700.2 }
           ];
-
-          experiencePositions.forEach((b) => {
-            // Borrar área de empresa (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 65,
-              y: PAGE_H - (b.empresa + 2),
-              width: 270,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de país (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 445,
-              y: PAGE_H - (b.empresa + 2),
-              width: 100,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar checkboxes
-            newPage.drawRectangle({
-              x: 345,
-              y: PAGE_H - (b.empresa + 2),
-              width: 50,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de departamento (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 65,
-              y: PAGE_H - (b.depto + 2),
-              width: 170,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de municipio (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 243,
-              y: PAGE_H - (b.depto + 2),
-              width: 170,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de correo (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 418,
-              y: PAGE_H - (b.depto + 2),
-              width: 135,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de teléfono (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 65,
-              y: PAGE_H - (b.tel + 2),
-              width: 170,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de fechas de ingreso (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 262,
-              y: PAGE_H - (b.tel + 2),
-              width: 65,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de fechas de retiro (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 429,
-              y: PAGE_H - (b.tel + 2),
-              width: 65,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de cargo (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 65,
-              y: PAGE_H - (b.cargo + 2),
-              width: 170,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de dependencia (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 243,
-              y: PAGE_H - (b.cargo + 2),
-              width: 160,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-            // Borrar área de dirección (debajo de la etiqueta)
-            newPage.drawRectangle({
-              x: 413,
-              y: PAGE_H - (b.cargo + 2),
-              width: 140,
-              height: 10,
-              fillColor: rgb(1, 1, 1)
-            });
-          });
-
-          // Cada página adicional tiene 4 experiencias
-          const baseExpIndex = 4 + page.index * 4;
           
           experiencePositions.forEach((b, expI) => {
             const expIndex = baseExpIndex + expI;
             const fields = [
-              { id: `exp${expIndex}_empresa`, x: 65, y: b.empresa + 8, w: 258 },
-              { id: `exp${expIndex}_publica`, x: 345, y: b.empresa + 12, w: 8, h: 8, type: 'chk' },
-              { id: `exp${expIndex}_privada`, x: 393, y: b.empresa + 12, w: 8, h: 8, type: 'chk' },
-              { id: `exp${expIndex}_pais`, x: 450, y: b.empresa + 8, w: 99 },
-              { id: `exp${expIndex}_departamento`, x: 65, y: b.depto + 8, w: 169 },
-              { id: `exp${expIndex}_municipio`, x: 243, y: b.depto + 8, w: 166 },
-              { id: `exp${expIndex}_correo`, x: 418, y: b.depto + 8, w: 131 },
-              { id: `exp${expIndex}_telefono`, x: 65, y: b.tel + 7, w: 165, h: 15 },
-              { id: `exp${expIndex}_ingresoDia`, x: 262, y: b.tel + 12, w: 15, h: 10 },
-              { id: `exp${expIndex}_ingresoMes`, x: 311, y: b.tel + 12, w: 16, h: 10 },
-              { id: `exp${expIndex}_ingresoAno`, x: 361, y: b.tel + 12, w: 33, h: 10 },
-              { id: `exp${expIndex}_retiroDia`, x: 429, y: b.tel + 12, w: 15, h: 10 },
-              { id: `exp${expIndex}_retiroMes`, x: 478, y: b.tel + 12, w: 16, h: 10 },
-              { id: `exp${expIndex}_retiroAno`, x: 528, y: b.tel + 12, w: 28, h: 10 },
-              { id: `exp${expIndex}_cargo`, x: 65, y: b.cargo + 9, w: 168 },
-              { id: `exp${expIndex}_dependencia`, x: 243, y: b.cargo + 9, w: 157 },
-              { id: `exp${expIndex}_direccion`, x: 413, y: b.cargo + 9, w: 136 }
+              { id: `exp${expIndex}_empresa`, x: 65, y: b.empresa + 8, w: 258, h: 14, type: 'text', size: 9 },
+              { id: `exp${expIndex}_publica`, x: 345, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${expIndex}_tipo`, size: 10 },
+              { id: `exp${expIndex}_privada`, x: 393, y: b.empresa + 12, w: 8, h: 8, type: 'chk', group: `exp${expIndex}_tipo`, size: 10 },
+              { id: `exp${expIndex}_pais`, x: 445, y: b.empresa + 8, w: 99, h: 14, type: 'text', size: 9 },
+              { id: `exp${expIndex}_departamento`, x: 65, y: b.depto + 8, w: 169, h: 14, type: 'text', size: 9 },
+              { id: `exp${expIndex}_municipio`, x: 243, y: b.depto + 8, w: 166, h: 14, type: 'text', size: 9 },
+              { id: `exp${expIndex}_correo`, x: 418, y: b.depto + 8, w: 131, h: 14, type: 'text', size: 9 },
+              { id: `exp${expIndex}_telefono`, x: 65, y: b.tel + 7, w: 165, h: 15, type: 'text', size: 9 },
+              { id: `exp${expIndex}_ingresoDia`, x: 262, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 9, align: 'center' },
+              { id: `exp${expIndex}_ingresoMes`, x: 311, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 9, align: 'center' },
+              { id: `exp${expIndex}_ingresoAno`, x: 361, y: b.tel + 11, w: 33, h: 10, type: 'text', size: 9, align: 'center' },
+              { id: `exp${expIndex}_retiroDia`, x: 429, y: b.tel + 11, w: 15, h: 10, type: 'text', size: 9, align: 'center' },
+              { id: `exp${expIndex}_retiroMes`, x: 478, y: b.tel + 11, w: 16, h: 10, type: 'text', size: 9, align: 'center' },
+              { id: `exp${expIndex}_retiroAno`, x: 528, y: b.tel + 11, w: 28, h: 10, type: 'text', size: 9, align: 'center' },
+              { id: `exp${expIndex}_cargo`, x: 65, y: b.cargo + 9, w: 168, h: 14, type: 'text', size: 9 },
+              { id: `exp${expIndex}_dependencia`, x: 243, y: b.cargo + 9, w: 157, h: 14, type: 'text', size: 9 },
+              { id: `exp${expIndex}_direccion`, x: 413, y: b.cargo + 9, w: 136, h: 14, type: 'text', size: 9 }
             ];
             
             fields.forEach(f => {
               const value = formatFieldValue(f.id, state[f.id]);
-              if (value) {
-                if (f.type === 'chk') {
-                  if (value) {
-                    const size = 8;
-                    newPage.drawText('X', {
-                      x: f.x,
-                      y: PAGE_H - (f.y + 8) + 1,
-                      size: size,
-                      font: newFont,
-                      color: rgb(0.05, 0.05, 0.1)
-                    });
-                  }
-                } else {
-                  let size = 7;
-                  const maxWidth = f.w || 200;
-                  const adjustedSize = adjustTextSize(value.toString(), maxWidth, size);
-                  size = Math.min(size, adjustedSize);
-                  
-                  newPage.drawText(value.toString(), {
-                    x: f.x,
-                    y: PAGE_H - f.y,
+              if (!value) return;
+
+              if (f.type === 'chk') {
+                if (value) {
+                  const size = Math.min(f.w, f.h) * 0.85;
+                  newPage.drawText('X', {
+                    x: f.x + (f.w - size * 0.62) / 2,
+                    y: PAGE_H - (f.y + f.h) + (f.h - size) / 2 + 1,
                     size: size,
                     font: newFont,
-                    color: rgb(0.05, 0.05, 0.25)
+                    color: rgb(0.05, 0.05, 0.1)
                   });
                 }
+              } else {
+                let size = f.size || 9;
+                const maxWidth = f.w - 2;
+
+                const adjustedSize = adjustTextSize(value.toString(), maxWidth, size);
+                size = Math.min(size, adjustedSize);
+
+                let x = f.x + 1;
+                if (f.align === 'center') {
+                  const textWidth = value.toString().length * size * 0.6;
+                  x = f.x + Math.max(1, (f.w - textWidth) / 2);
+                }
+
+                const y = PAGE_H - (f.y + f.h) + (f.h - size) / 2 + 1.5;
+                newPage.drawText(value.toString(), {
+                  x: x,
+                  y: y,
+                  size: size,
+                  font: newFont,
+                  color: rgb(0.05, 0.05, 0.25)
+                });
               }
             });
           });
@@ -768,554 +675,6 @@ function App() {
     }
   };
 
-  const downloadWord = async () => {
-    try {
-      showStatus('Generando documento Word...');
-
-      const doc = new DocxDocument({
-        sections: [{
-          properties: {},
-          children: [
-            new Paragraph({
-              text: 'FORMATO ÚNICO DE HOJA DE VIDA — PERSONA NATURAL',
-              heading: HeadingLevel.HEADING_1,
-              alignment: AlignmentType.CENTER,
-              spacing: { after: 400 }
-            }),
-
-            // Tabla de información personal
-            new Table({
-              rows: [
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'PRIMER APELLIDO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.primerApellido || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'SEGUNDO APELLIDO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.segundoApellido || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'PRIMER NOMBRE', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.primerNombre || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'SEGUNDO NOMBRE', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.segundoNombre || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'TIPO DOCUMENTO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.tipoDocumento || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'NÚMERO DOCUMENTO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.numeroDocumento || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'FECHA EXPEDICIÓN', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.fechaExpedicion || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'PAÍS EXPEDICIÓN', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.paisExpedicion || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'DEPTO EXPEDICIÓN', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.departamentoExpedicion || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'MUNICIPIO EXPEDICIÓN', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.municipioExpedicion || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'PAÍS NACIMIENTO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.paisNacimiento || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'DEPTO NACIMIENTO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.departamentoNacimiento || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'MUNICIPIO NACIMIENTO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.municipioNacimiento || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'GÉNERO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.genero || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'GRUPO SANGUÍNEO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.grupoSanguineo || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'FACTOR RH', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.factorRH || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                })
-              ],
-              width: { size: 100, type: WidthType.PERCENTAGE }
-            }),
-
-            new Paragraph({ text: '', spacing: { after: 300 } }),
-
-            // Información de contacto
-            new Paragraph({
-              text: 'INFORMACIÓN DE CONTACTO',
-              heading: HeadingLevel.HEADING_2,
-              spacing: { before: 400, after: 200 }
-            }),
-
-            new Table({
-              rows: [
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'DIRECCIÓN RESIDENCIA', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.direccionResidencia || '')],
-                      width: { size: 75, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'PAÍS RESIDENCIA', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.paisResidencia || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'DEPTO RESIDENCIA', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.departamentoResidencia || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'MUNICIPIO RESIDENCIA', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.municipioResidencia || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'TELÉFONO FIJO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.telefonoFijo || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'TELÉFONO CELULAR', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.telefonoCelular || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'CORREO ELECTRÓNICO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(state.correoElectronico || '')],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                })
-              ],
-              width: { size: 100, type: WidthType.PERCENTAGE }
-            }),
-
-            new Paragraph({ text: '', spacing: { after: 300 } }),
-
-            // Experiencia laboral
-            new Paragraph({
-              text: 'EXPERIENCIA LABORAL',
-              heading: HeadingLevel.HEADING_2,
-              spacing: { before: 400, after: 200 }
-            }),
-
-            new Table({
-              rows: [
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'TIEMPO SERVIDOR PÚBLICO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(`${state.tiempoServidorAnos || 0} años, ${state.tiempoServidorMeses || 0} meses`)],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph({ text: 'TIEMPO PRIVADO', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(`${state.tiempoPrivadoAnos || 0} años, ${state.tiempoPrivadoMeses || 0} meses`)],
-                      width: { size: 25, type: WidthType.PERCENTAGE }
-                    })
-                  ]
-                }),
-                new TableRow({
-                  children: [
-                    new TableCell({
-                      children: [new Paragraph({ text: 'TIEMPO TOTAL', bold: true })],
-                      width: { size: 25, type: WidthType.PERCENTAGE },
-                      shading: { fill: 'DDDDDD' }
-                    }),
-                    new TableCell({
-                      children: [new Paragraph(`${state.tiempoTotalAnos || 0} años, ${state.tiempoTotalMeses || 0} meses`)],
-                      width: { size: 75, type: WidthType.PERCENTAGE },
-                      columnSpan: 3
-                    })
-                  ]
-                })
-              ],
-              width: { size: 100, type: WidthType.PERCENTAGE }
-            }),
-
-            new Paragraph({ text: '', spacing: { after: 300 } }),
-
-            // Experiencias detalladas
-            new Paragraph({
-              text: 'EXPERIENCIAS LABORALES',
-              heading: HeadingLevel.HEADING_2,
-              spacing: { before: 400, after: 200 }
-            }),
-
-            ...[...Array(4 + additionalExperiencePages * 4).keys()].map(i => {
-              const empresa = state[`exp${i}_empresa`];
-              const cargo = state[`exp${i}_cargo`];
-              const ingreso = state[`exp${i}_ingreso`];
-              const retiro = state[`exp${i}_retiro`];
-              const pais = state[`exp${i}_pais`];
-              const depto = state[`exp${i}_departamento`];
-              const municipio = state[`exp${i}_municipio`];
-              const correo = state[`exp${i}_correo`];
-              const telefono = state[`exp${i}_telefono`];
-              const dependencia = state[`exp${i}_dependencia`];
-              const direccion = state[`exp${i}_direccion`];
-
-              if (!empresa && !cargo) return null;
-
-              return new Table({
-                rows: [
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: `Experiencia #${i + 1}`, bold: true })],
-                        width: { size: 100, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'CCCCCC' },
-                        columnSpan: 2
-                      })
-                    ]
-                  }),
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: 'EMPRESA', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(empresa || '')],
-                        width: { size: 75, type: WidthType.PERCENTAGE }
-                      })
-                    ]
-                  }),
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: 'CARGO', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(cargo || '')],
-                        width: { size: 75, type: WidthType.PERCENTAGE }
-                      })
-                    ]
-                  }),
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: 'PAÍS', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(pais || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph({ text: 'DEPARTAMENTO', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(depto || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      })
-                    ]
-                  }),
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: 'MUNICIPIO', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(municipio || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph({ text: 'CORREO', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(correo || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      })
-                    ]
-                  }),
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: 'TELÉFONO', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(telefono || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph({ text: 'DEPENDENCIA', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(dependencia || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      })
-                    ]
-                  }),
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: 'DIRECCIÓN', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(direccion || '')],
-                        width: { size: 75, type: WidthType.PERCENTAGE },
-                        columnSpan: 3
-                      })
-                    ]
-                  }),
-                  new TableRow({
-                    children: [
-                      new TableCell({
-                        children: [new Paragraph({ text: 'FECHA INGRESO', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(ingreso || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph({ text: 'FECHA RETIRO', bold: true })],
-                        width: { size: 25, type: WidthType.PERCENTAGE },
-                        shading: { fill: 'EEEEEE' }
-                      }),
-                      new TableCell({
-                        children: [new Paragraph(retiro || '')],
-                        width: { size: 25, type: WidthType.PERCENTAGE }
-                      })
-                    ]
-                  })
-                ],
-                width: { size: 100, type: WidthType.PERCENTAGE }
-              });
-            }).filter(Boolean),
-
-            new Paragraph({ text: '', spacing: { after: 300 } }),
-
-            // Firma
-            new Paragraph({
-              text: 'FIRMA',
-              heading: HeadingLevel.HEADING_2,
-              spacing: { before: 400, after: 200 }
-            }),
-
-            new Paragraph({
-              text: signature ? 'Firma digital incluida' : 'Sin firma',
-              italics: true
-            })
-          ]
-        }]
-      });
-
-      const blob = await Packer.toBlob(doc);
-      const url = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      const fileName = (state.primerApellido || 'formato') + '_' + (state.nombres || 'hoja_de_vida');
-      a.href = url;
-      a.download = fileName.replace(/\s+/g, '_') + '.docx';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-
-      setTimeout(() => URL.revokeObjectURL(url), 4000);
-      showStatus('Documento Word descargado ✓');
-    } catch (err) {
-      console.error(err);
-      alert('Ocurrió un error generando el documento Word: ' + err.message);
-    }
-  };
-
   return (
     <div className={cleanView ? 'clean' : ''}>
       <header>
@@ -1342,9 +701,6 @@ function App() {
         </button>
         <button className="btn primary" onClick={downloadPDF}>
           ⬇️ Descargar PDF
-        </button>
-        <button className="btn primary" onClick={downloadWord}>
-          📄 Descargar Word
         </button>
       </header>
 
