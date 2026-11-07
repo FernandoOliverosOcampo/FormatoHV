@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { PDFDocument, StandardFonts, rgb } from 'pdf-lib';
 import { Document, Page, pdfjs } from 'react-pdf';
+import { Document as DocxDocument, Packer, Paragraph, TextRun, Table, TableRow, TableCell, WidthType, AlignmentType, HeadingLevel } from 'docx';
 import SignaturePad from './components/SignatureCanvas';
 import DataForm from './components/DataForm';
 import PageOrganizer from './components/PageOrganizer';
@@ -546,10 +547,10 @@ function App() {
           
           // 4 registros de experiencia por página adicional
           const experiencePositions = [
-            { empresa: 219.6, depto: 249.6, tel: 279.6, cargo: 309.6 },
-            { empresa: 349.8, depto: 379.8, tel: 409.8, cargo: 439.8 },
-            { empresa: 479.8, depto: 509.8, tel: 539.8, cargo: 569.8 },
-            { empresa: 610.2, depto: 640.2, tel: 670.2, cargo: 700.2 }
+            { empresa: 220, depto: 265, tel: 310, cargo: 355 },
+            { empresa: 390, depto: 435, tel: 480, cargo: 525 },
+            { empresa: 560, depto: 605, tel: 650, cargo: 695 },
+            { empresa: 730, depto: 775, tel: 820, cargo: 865 }
           ];
           
           experiencePositions.forEach((b, expI) => {
@@ -667,6 +668,285 @@ function App() {
     }
   };
 
+  const downloadWord = async () => {
+    try {
+      showStatus('Generando documento Word...');
+
+      const doc = new DocxDocument({
+        sections: [{
+          properties: {},
+          children: [
+            new Paragraph({
+              text: 'FORMATO ÚNICO DE HOJA DE VIDA — PERSONA NATURAL',
+              heading: HeadingLevel.HEADING_1,
+              alignment: AlignmentType.CENTER,
+              spacing: { after: 400 }
+            }),
+
+            // Información Personal
+            new Paragraph({
+              text: 'INFORMACIÓN PERSONAL',
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 400, after: 200 }
+            }),
+
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Primer Apellido: ', bold: true }),
+                new TextRun(state.primerApellido || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Segundo Apellido: ', bold: true }),
+                new TextRun(state.segundoApellido || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Primer Nombre: ', bold: true }),
+                new TextRun(state.primerNombre || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Segundo Nombre: ', bold: true }),
+                new TextRun(state.segundoNombre || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Tipo de Documento: ', bold: true }),
+                new TextRun(state.tipoDocumento || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Número de Documento: ', bold: true }),
+                new TextRun(state.numeroDocumento || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Fecha de Expedición: ', bold: true }),
+                new TextRun(state.fechaExpedicion || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'País de Expedición: ', bold: true }),
+                new TextRun(state.paisExpedicion || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Departamento de Expedición: ', bold: true }),
+                new TextRun(state.departamentoExpedicion || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Municipio de Expedición: ', bold: true }),
+                new TextRun(state.municipioExpedicion || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'País de Nacimiento: ', bold: true }),
+                new TextRun(state.paisNacimiento || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Departamento de Nacimiento: ', bold: true }),
+                new TextRun(state.departamentoNacimiento || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Municipio de Nacimiento: ', bold: true }),
+                new TextRun(state.municipioNacimiento || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Género: ', bold: true }),
+                new TextRun(state.genero || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Grupo Sanguíneo: ', bold: true }),
+                new TextRun(state.grupoSanguineo || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Factor RH: ', bold: true }),
+                new TextRun(state.factorRH || '')
+              ]
+            }),
+
+            // Contacto
+            new Paragraph({
+              text: 'INFORMACIÓN DE CONTACTO',
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 400, after: 200 }
+            }),
+
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Dirección Residencia: ', bold: true }),
+                new TextRun(state.direccionResidencia || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'País Residencia: ', bold: true }),
+                new TextRun(state.paisResidencia || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Departamento Residencia: ', bold: true }),
+                new TextRun(state.departamentoResidencia || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Municipio Residencia: ', bold: true }),
+                new TextRun(state.municipioResidencia || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Teléfono Fijo: ', bold: true }),
+                new TextRun(state.telefonoFijo || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Teléfono Celular: ', bold: true }),
+                new TextRun(state.telefonoCelular || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Correo Electrónico: ', bold: true }),
+                new TextRun(state.correoElectronico || '')
+              ]
+            }),
+
+            // Experiencia Laboral
+            new Paragraph({
+              text: 'EXPERIENCIA LABORAL',
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 400, after: 200 }
+            }),
+
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Tiempo Servidor Público: ', bold: true }),
+                new TextRun(`${state.tiempoServidorAnos || 0} años, ${state.tiempoServidorMeses || 0} meses`)
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Tiempo Privado: ', bold: true }),
+                new TextRun(`${state.tiempoPrivadoAnos || 0} años, ${state.tiempoPrivadoMeses || 0} meses`)
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Tiempo Total: ', bold: true }),
+                new TextRun(`${state.tiempoTotalAnos || 0} años, ${state.tiempoTotalMeses || 0} meses`)
+              ]
+            }),
+
+            // Experiencias (4 principales + adicionales)
+            ...[...Array(4 + additionalExperiencePages * 4).keys()].map(i => {
+              const empresa = state[`exp${i}_empresa`];
+              const cargo = state[`exp${i}_cargo`];
+              const ingreso = state[`exp${i}_ingreso`];
+              const retiro = state[`exp${i}_retiro`];
+
+              if (!empresa && !cargo) return null;
+
+              return new Paragraph({
+                children: [
+                  new TextRun({ text: `Experiencia #${i + 1}: `, bold: true }),
+                  new TextRun(`${empresa || 'N/A'} - ${cargo || 'N/A'} (${ingreso || 'N/A'} a ${retiro || 'N/A'})`)
+                ],
+                spacing: { after: 100 }
+              });
+            }).filter(Boolean),
+
+            // Educación
+            new Paragraph({
+              text: 'EDUCACIÓN',
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 400, after: 200 }
+            }),
+
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Nivel Educativo: ', bold: true }),
+                new TextRun(state.nivelEducativo || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Título Obtenido: ', bold: true }),
+                new TextRun(state.tituloObtenido || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Institución: ', bold: true }),
+                new TextRun(state.institucion || '')
+              ]
+            }),
+            new Paragraph({
+              children: [
+                new TextRun({ text: 'Año de Graduación: ', bold: true }),
+                new TextRun(state.anoGraduacion || '')
+              ]
+            }),
+
+            // Firma
+            new Paragraph({
+              text: 'FIRMA',
+              heading: HeadingLevel.HEADING_2,
+              spacing: { before: 400, after: 200 }
+            }),
+
+            new Paragraph({
+              text: signature ? 'Firma digital incluida' : 'Sin firma',
+              italics: true
+            })
+          ]
+        }]
+      });
+
+      const blob = await Packer.toBlob(doc);
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      const fileName = (state.primerApellido || 'formato') + '_' + (state.nombres || 'hoja_de_vida');
+      a.href = url;
+      a.download = fileName.replace(/\s+/g, '_') + '.docx';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      setTimeout(() => URL.revokeObjectURL(url), 4000);
+      showStatus('Documento Word descargado ✓');
+    } catch (err) {
+      console.error(err);
+      alert('Ocurrió un error generando el documento Word: ' + err.message);
+    }
+  };
+
   return (
     <div className={cleanView ? 'clean' : ''}>
       <header>
@@ -693,6 +973,9 @@ function App() {
         </button>
         <button className="btn primary" onClick={downloadPDF}>
           ⬇️ Descargar PDF
+        </button>
+        <button className="btn primary" onClick={downloadWord}>
+          📄 Descargar Word
         </button>
       </header>
 
