@@ -539,19 +539,119 @@ function App() {
           // Página de experiencia - copiar página 2 como plantilla
           const [copiedPage] = await newPdfDoc.copyPages(pdfDoc, [1]);
           newPdfDoc.addPage(copiedPage);
-          
+
           const newPage = newPdfDoc.getPage(newPdfDoc.getPageCount() - 1);
-          
-          // Cada página adicional tiene 4 experiencias
-          const baseExpIndex = 4 + page.index * 4;
-          
-          // 4 registros de experiencia por página adicional (mismas coordenadas que página 2)
+
+          // Dibujar rectángulos blancos sobre las áreas de texto de las 4 experiencias originales
+          // para borrar el contenido existente antes de escribir los nuevos datos
           const experiencePositions = [
             { empresa: 219.6, depto: 249.6, tel: 279.6, cargo: 309.6 },
             { empresa: 350.2, depto: 380.2, tel: 410.2, cargo: 440.2 },
             { empresa: 479.8, depto: 509.8, tel: 539.8, cargo: 569.8 },
             { empresa: 610.2, depto: 640.2, tel: 670.2, cargo: 700.2 }
           ];
+
+          experiencePositions.forEach((b) => {
+            // Borrar área de empresa (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 65,
+              y: PAGE_H - (b.empresa + 2),
+              width: 270,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de país (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 445,
+              y: PAGE_H - (b.empresa + 2),
+              width: 100,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar checkboxes
+            newPage.drawRectangle({
+              x: 345,
+              y: PAGE_H - (b.empresa + 2),
+              width: 50,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de departamento (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 65,
+              y: PAGE_H - (b.depto + 2),
+              width: 170,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de municipio (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 243,
+              y: PAGE_H - (b.depto + 2),
+              width: 170,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de correo (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 418,
+              y: PAGE_H - (b.depto + 2),
+              width: 135,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de teléfono (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 65,
+              y: PAGE_H - (b.tel + 2),
+              width: 170,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de fechas de ingreso (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 262,
+              y: PAGE_H - (b.tel + 2),
+              width: 65,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de fechas de retiro (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 429,
+              y: PAGE_H - (b.tel + 2),
+              width: 65,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de cargo (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 65,
+              y: PAGE_H - (b.cargo + 2),
+              width: 170,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de dependencia (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 243,
+              y: PAGE_H - (b.cargo + 2),
+              width: 160,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+            // Borrar área de dirección (debajo de la etiqueta)
+            newPage.drawRectangle({
+              x: 413,
+              y: PAGE_H - (b.cargo + 2),
+              width: 140,
+              height: 10,
+              fillColor: rgb(1, 1, 1)
+            });
+          });
+
+          // Cada página adicional tiene 4 experiencias
+          const baseExpIndex = 4 + page.index * 4;
           
           experiencePositions.forEach((b, expI) => {
             const expIndex = baseExpIndex + expI;
